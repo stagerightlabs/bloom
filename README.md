@@ -16,6 +16,8 @@ This project would not have been possible without the tireless effort of develop
 
 Bloom is an independent project that is not affiliated with the [Stellar Development Foundation](https://www.stellar.org/foundation).
 
+Note: This library has not yet reached full functionality; it is not ready for use in production applications.
+
 ## Installation
 
 You can install the package via composer:
