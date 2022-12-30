@@ -1,0 +1,89 @@
+{
+    "_links": {
+        "self": {
+            "href": "https://horizon-testnet.stellar.org/accounts/[address]"
+        },
+        "transactions": {
+            "href": "https://horizon-testnet.stellar.org/accounts/[address]/transactions{?cursor,limit,order}",
+            "templated": true
+        },
+        "operations": {
+            "href": "https://horizon-testnet.stellar.org/accounts/[address]/operations{?cursor,limit,order}",
+            "templated": true
+        },
+        "payments": {
+            "href": "https://horizon-testnet.stellar.org/accounts/[address]/payments{?cursor,limit,order}",
+            "templated": true
+        },
+        "effects": {
+            "href": "https://horizon-testnet.stellar.org/accounts/[address]/effects{?cursor,limit,order}",
+            "templated": true
+        },
+        "offers": {
+            "href": "https://horizon-testnet.stellar.org/accounts/[address]/offers{?cursor,limit,order}",
+            "templated": true
+        },
+        "trades": {
+            "href": "https://horizon-testnet.stellar.org/accounts/[address]/trades{?cursor,limit,order}",
+            "templated": true
+        },
+        "data": {
+            "href": "https://horizon-testnet.stellar.org/accounts/[address]/data/{key}",
+            "templated": true
+        }
+    },
+    "id": "[address]",
+    "account_id": "[address]",
+    "sequence": "5607590906036224",
+    "sequence_ledger": 50,
+    "sequence_time": "100",
+    "subentry_count": 10,
+    "home_domain": "[domain]",
+    "last_modified_ledger": 1305619,
+    "last_modified_time": "2022-06-03T19:55:48Z",
+    "thresholds": {
+        "low_threshold": 1,
+        "med_threshold": 2,
+        "high_threshold": 3
+    },
+    "flags": {
+        "auth_required": true,
+        "auth_revocable": true,
+        "auth_immutable": true,
+        "auth_clawback_enabled": true
+    },
+    "balances": [
+        {
+            "balance": "800.0000000",
+            "limit": "922337203685.4775807",
+            "buying_liabilities": "110.0000000",
+            "selling_liabilities": "120.0000000",
+            "last_modified_ledger": 1457265,
+            "is_authorized": true,
+            "is_authorized_to_maintain_liabilities": true,
+            "asset_type": "credit_alphanum4",
+            "asset_code": "USDC",
+            "asset_issuer": "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5"
+        },
+        {
+            "balance": "10000.0000000",
+            "buying_liabilities": "0.0000000",
+            "selling_liabilities": "0.0000000",
+            "asset_type": "native"
+        }
+    ],
+    "signers": [
+        {
+            "weight": 1,
+            "key": "[address]",
+            "type": "ed25519_public_key"
+        }
+    ],
+    "data": {
+        "foo": "bar"
+    },
+    "num_sponsoring": 1,
+    "num_sponsored": 2,
+    "sponsor": "[sponsor]",
+    "paging_token": "[address]"
+}

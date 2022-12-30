@@ -1,0 +1,23 @@
+{
+    "_links": {},
+    "id": "",
+    "account_id": "",
+    "sequence": "",
+    "sequence_ledger": null,
+    "sequence_time": "",
+    "subentry_count": null,
+    "last_modified_ledger": null,
+    "last_modified_time": "",
+    "thresholds": {
+        "low_threshold": null,
+        "med_threshold": null,
+        "high_threshold": null
+    },
+    "flags": {},
+    "balances": [],
+    "signers": [],
+    "data": {},
+    "num_sponsoring": null,
+    "num_sponsored": null,
+    "paging_token": ""
+}

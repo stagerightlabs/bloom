@@ -1,0 +1,35 @@
+{
+    "cSpell.words": [
+        "alphanum",
+        "clawback",
+        "clawbacks",
+        "datetimes",
+        "Destmin",
+        "dont",
+        "Friendbot",
+        "hashable",
+        "keypair",
+        "keypairs",
+        "muxed",
+        "pentet",
+        "phpstan",
+        "Preimage",
+        "QUORUMSET",
+        "secretkey",
+        "sendmax",
+        "seqnum",
+        "stroops",
+        "timebounds",
+        "timepoints",
+        "trustline",
+        "trustlines",
+        "trustor",
+        "txset",
+        "unpadded"
+    ],
+    "files.exclude": {
+        ".coverage": true,
+        ".phpunit.cache": true
+    },
+    "namespaceResolver.sortAlphabetically": true,
+}

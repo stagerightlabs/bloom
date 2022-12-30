@@ -1,0 +1,50 @@
+{
+    "_links": {
+        "self": {
+            "href": "https://horizon-testnet.stellar.org/transactions/[hash]"
+        },
+        "account": {
+            "href": "https://horizon-testnet.stellar.org/accounts/[address]"
+        },
+        "ledger": {
+            "href": "https://horizon-testnet.stellar.org/ledgers/1443485"
+        },
+        "operations": {
+            "href": "https://horizon-testnet.stellar.org/transactions/[hash]/operations{?cursor,limit,order}",
+            "templated": true
+        },
+        "effects": {
+            "href": "https://horizon-testnet.stellar.org/transactions/[hash]/effects{?cursor,limit,order}",
+            "templated": true
+        },
+        "precedes": {
+            "href": "https://horizon-testnet.stellar.org/transactions?order=asc&cursor=6199720867270656"
+        },
+        "succeeds": {
+            "href": "https://horizon-testnet.stellar.org/transactions?order=desc&cursor=6199720867270656"
+        },
+        "transaction": {
+            "href": "https://horizon-testnet.stellar.org/transactions/[hash]"
+        }
+    },
+    "id": "[hash]",
+    "paging_token": "6199720867270656",
+    "successful": true,
+    "hash": "[hash]",
+    "ledger": 1443485,
+    "created_at": "2022-06-12T05:13:27Z",
+    "source_account": "[address]",
+    "source_account_sequence": "6199561953476610",
+    "fee_account": "[address]",
+    "fee_charged": "100",
+    "max_fee": "100",
+    "operation_count": 1,
+    "envelope_xdr": "[envelope_xdr]",
+    "result_xdr": "[result_xdr]",
+    "result_meta_xdr": "[result_meta_xdr]",
+    "fee_meta_xdr": "[fee_meta_xdr]",
+    "memo_type": "none",
+    "signatures": [
+        "[signature]"
+    ]
+}

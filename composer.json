@@ -1,0 +1,56 @@
+{
+    "name": "stagerightlabs/bloom",
+    "description": "A PHP library for communicating with the Stellar Horizon API.",
+    "keywords": [
+        "horizon",
+        "sdk",
+        "stellar",
+        "xlm"
+    ],
+    "homepage": "https://github.com/stagerightlabs/bloom",
+    "license": "Apache-2.0",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Ryan Durham",
+            "email": "ryan@stagerightlabs.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php-64bit": "^8.1",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-sodium": "*",
+        "brick/math": "^0.9.3",
+        "myclabs/deep-copy": "^1.11",
+        "stagerightlabs/phpxdr": "^0.0.15"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.3",
+        "phpstan/phpdoc-parser": "^1.15",
+        "phpstan/phpstan": "^1.2",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "StageRightLabs\\Bloom\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "StageRightLabs\\Bloom\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "format": "php-cs-fixer fix --config=.php-cs-fixer.dist.php --allow-risky yes",
+        "phpstan": "phpstan analyze -c phpstan.neon",
+        "docs": "@php docs/_generate.php"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
