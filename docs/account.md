@@ -1,6 +1,7 @@
-# Accounts
+# Accounts 
 
-Tools for working with Stellar accounts.
+Tools for working with Stellar accounts. These methods can be accessed by the 
+`account` property on a bloom instance: `$bloom->account`:
 
 
 ## retrieve()
@@ -54,10 +55,11 @@ $string = $sequenceNumber->toNativeString();
 | Name | Type | Notes |
 | ---- | ---- | ---- |
 | $account| `Account` |
-| $bump| `int` | The increment amount; defaults to 1. |
+| $bump| `int` | Increment amount. The default is 1. |
 
 ### Return Type
 
 `Account`
 
 ###### This page was dynamically generated from the AccountService source code.
+

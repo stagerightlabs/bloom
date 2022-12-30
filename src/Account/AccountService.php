@@ -10,7 +10,8 @@ use StageRightLabs\Bloom\Keypair\Keypair;
 use StageRightLabs\Bloom\Service;
 
 /**
- * Tools for working with Stellar accounts.
+ * Tools for working with Stellar accounts. These methods can be accessed by the 
+ * `account` property on a bloom instance: `$bloom->account`:
  */
 final class AccountService extends Service
 {
