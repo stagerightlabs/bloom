@@ -11,7 +11,6 @@ use StageRightLabs\Bloom\Cryptography\Signature;
 use StageRightLabs\Bloom\Cryptography\SignatureHint;
 use StageRightLabs\Bloom\Envelope\TransactionEnvelope;
 use StageRightLabs\Bloom\Envelope\TransactionV1Envelope;
-use StageRightLabs\Bloom\Horizon\Resource;
 use StageRightLabs\Bloom\Horizon\Response;
 use StageRightLabs\Bloom\Horizon\TransactionResource;
 use StageRightLabs\Bloom\Operation\OperationMeta;
@@ -37,8 +36,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_links_array()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $links = $transaction->getLinks();
         $expected = [
             'self'        => 'https://horizon-testnet.stellar.org/transactions/[hash]',
@@ -60,8 +58,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_a_single_link_from_the_links_array()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = 'https://horizon-testnet.stellar.org/transactions/[hash]';
 
         $this->assertEquals($expected, $transaction->getLink('self'));
@@ -73,8 +70,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_self_link()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = 'https://horizon-testnet.stellar.org/transactions/[hash]';
 
         $this->assertEquals($expected, $transaction->getSelfLink());
@@ -86,8 +82,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_account_link()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction', ['address' => 'ABCD']));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction', ['address' => 'ABCD']));
         $expected = 'https://horizon-testnet.stellar.org/accounts/ABCD';
 
         $this->assertEquals($expected, $transaction->getAccountLink());
@@ -99,8 +94,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_ledger_link()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = 'https://horizon-testnet.stellar.org/ledgers/994571';
 
         $this->assertEquals($expected, $transaction->getLedgerLink());
@@ -112,8 +106,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_operations_link()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = 'https://horizon-testnet.stellar.org/transactions/[hash]/operations{?cursor,limit,order}';
 
         $this->assertEquals($expected, $transaction->getOperationsLink());
@@ -125,8 +118,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_effects_link()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = 'https://horizon-testnet.stellar.org/transactions/[hash]/effects{?cursor,limit,order}';
 
         $this->assertEquals($expected, $transaction->getEffectsLink());
@@ -138,8 +130,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_precedes_link()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = 'https://horizon-testnet.stellar.org/transactions?order=asc&cursor=4271649918558208';
 
         $this->assertEquals($expected, $transaction->getPrecedesLink());
@@ -151,8 +142,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_succeeds_link()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = 'https://horizon-testnet.stellar.org/transactions?order=desc&cursor=4271649918558208';
 
         $this->assertEquals($expected, $transaction->getSucceedsLink());
@@ -164,8 +154,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_transaction_id()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = '[hash]';
 
         $this->assertEquals($expected, $transaction->getId());
@@ -177,8 +166,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_paging_token()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = '4271649918558208';
 
         $this->assertEquals($expected, $transaction->getPagingToken());
@@ -190,9 +178,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_success_status()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
-
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $this->assertTrue($transaction->wasSuccessful());
     }
 
@@ -202,8 +188,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_transaction_hash()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = '[hash]';
 
         $this->assertEquals($expected, $transaction->getHash());
@@ -215,8 +200,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_ledger_sequence()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = '994571';
 
         $this->assertEquals($expected, $transaction->getLedgerSequence());
@@ -228,8 +212,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_created_at_date()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = new \DateTime('2022-05-15T21:41:56Z');
 
         $this->assertEquals($expected, $transaction->getCreatedAt());
@@ -241,9 +224,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_null_for_created_at_if_no_date_is_present()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_without_created_at'));
-        $transaction = TransactionResource::fromResource($resource);
-
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_without_created_at'));
         $this->assertNull($transaction->getCreatedAt());
     }
 
@@ -253,8 +234,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_source_account_address()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction', ['address' => 'ABCD']));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction', ['address' => 'ABCD']));
         $expected = 'ABCD';
 
         $this->assertEquals($expected, $transaction->getSourceAccountAddress());
@@ -266,8 +246,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_source_account_sequence()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = '3133127102824503';
 
         $this->assertEquals($expected, $transaction->getSourceAccountSequence());
@@ -279,9 +258,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_fee_charged()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
-
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $this->assertEquals('0.0010000', $transaction->getFeeCharged()->toNativeString());
     }
 
@@ -291,9 +268,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_fee_charged()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_without_fee_charged'));
-        $transaction = TransactionResource::fromResource($resource);
-
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_without_fee_charged'));
         $this->assertNull($transaction->getFeeCharged());
     }
 
@@ -303,9 +278,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_max_fee()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
-
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $this->assertEquals('0.1000000', $transaction->getMaxFee()->toNativeString());
     }
 
@@ -315,9 +288,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_max_fee()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_without_max_fee'));
-        $transaction = TransactionResource::fromResource($resource);
-
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_without_max_fee'));
         $this->assertNull($transaction->getMaxFee());
     }
 
@@ -327,9 +298,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_operation_count()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
-
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $this->assertEquals(1, $transaction->getOperationCount());
     }
 
@@ -339,8 +308,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_envelope_xdr()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_submitted'));
-        $transactionResource = TransactionResource::fromResource($resource);
+        $transactionResource = TransactionResource::fromResponse(Response::fake('transaction_submitted'));
         $expected = '[envelope_xdr]';
 
         $this->assertEquals($expected, $transactionResource->getEnvelopeXdr());
@@ -367,10 +335,9 @@ class TransactionResourceTest extends TestCase
             ->withSignatures($signatureList);
         $buffer = XDR::fresh()->write($envelope);
 
-        $resource = Resource::fromResponse(Response::fake('transaction_submitted', [
+        $transactionResource = TransactionResource::fromResponse(Response::fake('transaction_submitted', [
             'envelope_xdr' => $buffer->toBase64()
         ]));
-        $transactionResource = TransactionResource::fromResource($resource);
 
         $decoded = $transactionResource->getEnvelope();
 
@@ -383,9 +350,7 @@ class TransactionResourceTest extends TestCase
      */
     public function the_envelope_returns_null_if_xdr_decoding_fails()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_submitted'));
-        $transactionResource = TransactionResource::fromResource($resource);
-
+        $transactionResource = TransactionResource::fromResponse(Response::fake('transaction_submitted'));
         $this->assertNull($transactionResource->getEnvelope());
     }
 
@@ -395,8 +360,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_result_xdr()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = 'AAAAAAAAAGQAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=';
 
         $this->assertEquals($expected, $transaction->getResultXdr());
@@ -408,8 +372,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_decoded_result()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transactionA = TransactionResource::fromResource($resource);
+        $transactionA = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $transactionB = new TransactionResource();
 
         $this->assertInstanceOf(TransactionResult::class, $transactionA->getResult());
@@ -422,8 +385,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_result_meta_xdr()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = 'AAAAAgAAAAIAAAADABZvBAAAAAAAAAAAvVwFT3+rSlZXIxuRDhJnGNK1hmUGgR7Iz1Fs6Mi8yPgAAAAAPDNgHAAWaesAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAABABZvBAAAAAAAAAAAvVwFT3+rSlZXIxuRDhJnGNK1hmUGgR7Iz1Fs6Mi8yPgAAAAAPDNgHAAWaesAAAABAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAwAAAAAAFm8EAAAAAGOXevYAAAAAAAAAAQAAAAMAAAADABZvAgAAAAAAAAAAEH3Rayw4M0iCLoEe96rPFNGYim8AVHJU0z4ebYZW4JwAXyFoHjXfuAAAATsAAAHXAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAwAAAAAAFmoCAAAAAGOXYMUAAAAAAAAAAQAWbwQAAAAAAAAAABB90WssODNIgi6BHveqzxTRmIpvAFRyVNM+Hm2GVuCcAF8hUNW+97gAAAE7AAAB1wAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAMAAAAAABZqAgAAAABjl2DFAAAAAAAAAAAAFm8EAAAAAAAAAACgG04mjMWmD5gmfeWpY2/Ogov+50UUsejfFOdqR9nGMAAAABdIdugAABZvBAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=';
 
         $this->assertEquals($expected, $transaction->getResultMetaXdr());
@@ -435,8 +397,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_decoded_result_meta()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transactionA = TransactionResource::fromResource($resource);
+        $transactionA = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $transactionB = new TransactionResource();
 
         $this->assertInstanceOf(TransactionMeta::class, $transactionA->getResultMeta());
@@ -449,8 +410,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_fee_meta_xdr()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = 'AAAAAgAAAAMAFmnrAAAAAAAAAAC9XAVPf6tKVlcjG5EOEmcY0rWGZQaBHsjPUWzoyLzI+AAAAAA8M2CAABZp6wAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAEAFm8EAAAAAAAAAAC9XAVPf6tKVlcjG5EOEmcY0rWGZQaBHsjPUWzoyLzI+AAAAAA8M2AcABZp6wAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA==';
 
         $this->assertEquals($expected, $transaction->getFeeMetaXdr());
@@ -462,8 +422,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_decoded_fee_meta()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transactionA = TransactionResource::fromResource($resource);
+        $transactionA = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $transactionB = new TransactionResource();
 
         $this->assertInstanceOf(OperationMeta::class, $transactionA->getFeeMeta());
@@ -476,8 +435,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_memo()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_text_memo'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_text_memo'));
         $expected = '298424';
 
         $this->assertEquals($expected, $transaction->getMemo());
@@ -489,8 +447,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_memo_type()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_text_memo'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_text_memo'));
         $expected = 'text';
 
         $this->assertEquals($expected, $transaction->getMemoType());
@@ -502,8 +459,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_signatures()
     {
-        $resource = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
         $expected = [
             "[signature1]",
             "[signature2]"
@@ -518,8 +474,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_preconditions()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions'));
         $expected = [
             'time_bounds'                     => [
                 'min_time' => '1643673600',
@@ -547,8 +502,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_min_time_condition()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions'));
         $expected = new \Datetime('@1643673600');
 
         $this->assertEquals($expected, $transaction->getMinTimeCondition());
@@ -560,8 +514,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_null_for_a_min_time_condition_of_zero()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions_alt'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions_alt'));
 
         $this->assertNull($transaction->getMinTimeCondition());
     }
@@ -572,8 +525,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_max_time_condition()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions'));
         $expected = new \Datetime('@1643673600');
 
         $this->assertEquals($expected, $transaction->getMaxTimeCondition());
@@ -585,9 +537,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_null_for_a_max_time_condition_of_zero()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions_alt'));
-        $transaction = TransactionResource::fromResource($resource);
-
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions_alt'));
         $this->assertNull($transaction->getMaxTimeCondition());
     }
 
@@ -597,8 +547,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_min_ledger_condition()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions'));
         $expected = 100;
 
         $this->assertEquals($expected, $transaction->getMinLedgerCondition());
@@ -610,8 +559,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_max_ledger_condition()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions'));
         $expected = 200;
 
         $this->assertEquals($expected, $transaction->getMaxLedgerCondition());
@@ -623,8 +571,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_min_account_sequence_condition()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions'));
         $expected = Int64::of('100');
 
         $this->assertEquals($expected, $transaction->getMinAccountSequenceCondition());
@@ -636,8 +583,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_min_account_sequence_age_condition()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions'));
         $expected = UInt64::of('200');
 
         $this->assertTrue($expected->isEqualTo($transaction->getMinAccountSequenceAgeCondition()));
@@ -649,8 +595,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_null_for_a_missing_min_account_sequence_age_condition()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions_alt'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions_alt'));
 
         $this->assertNull($transaction->getMinAccountSequenceAgeCondition());
     }
@@ -661,8 +606,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_min_account_sequence_ledger_gap_condition()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions'));
         $expected = 1;
 
         $this->assertEquals($expected, $transaction->getMinAccountSequenceLedgerGapCondition());
@@ -674,8 +618,7 @@ class TransactionResourceTest extends TestCase
      */
     public function it_returns_the_extra_signers_condition()
     {
-        $resource = Resource::fromResponse(Response::fake('transaction_with_preconditions'));
-        $transaction = TransactionResource::fromResource($resource);
+        $transaction = TransactionResource::fromResponse(Response::fake('transaction_with_preconditions'));
         $expected = [
             'SIGNERA',
             'SIGNERB',
