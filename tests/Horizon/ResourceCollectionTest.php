@@ -193,4 +193,47 @@ class ResourceCollectionTest extends TestCase
         $this->assertTrue(is_array($arr));
         $this->assertCount(2, $arr);
     }
+
+    /**
+     * @test
+     * @covers ::getLinks
+     */
+    public function it_returns_the_links()
+    {
+        $collection = ResourceCollection::fromResponse(Response::fake('account_transactions'));
+        $links = $collection->getLinks();
+        $expected = [
+            'self' => 'https://horizon-testnet.stellar.org/accounts/GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW/transactions?cursor=&limit=10&order=asc',
+            'next' => 'https://horizon-testnet.stellar.org/accounts/GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW/transactions?cursor=1116579827830784&limit=10&order=asc',
+            'prev' => 'https://horizon-testnet.stellar.org/accounts/GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW/transactions?cursor=1115351467184128&limit=10&order=desc'
+        ];
+
+        $this->assertEquals($expected, $links);
+    }
+
+    /**
+     * @test
+     * @covers ::getLink
+     */
+    public function it_returns_a_single_link()
+    {
+        $collection = ResourceCollection::fromResponse(Response::fake('account_transactions'));
+        $this->assertEquals(
+            'https://horizon-testnet.stellar.org/accounts/GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW/transactions?cursor=&limit=10&order=asc',
+            $collection->getLink('self')
+        );
+    }
+
+    /**
+     * @test
+     * @covers ::getSelfLink
+     */
+    public function it_returns_the_self_link()
+    {
+        $collection = ResourceCollection::fromResponse(Response::fake('account_transactions'));
+        $this->assertEquals(
+            'https://horizon-testnet.stellar.org/accounts/GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW/transactions?cursor=&limit=10&order=asc',
+            $collection->getSelfLink()
+        );
+    }
 }
