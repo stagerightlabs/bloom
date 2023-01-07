@@ -16,7 +16,7 @@ class Resource
     protected ?Response $response;
 
     /**
-     * Instantiate a new class instance.
+     * Instantiate a new resource instance.
      *
      * @param Json|array<int|string, mixed>|string $payload
      * @param Response|null $response
@@ -35,7 +35,7 @@ class Resource
     }
 
     /**
-     * Create a new class instance from an array.
+     * Create a new resource instance from an array.
      *
      * @param array<string, mixed> $payload
      * @return static
@@ -46,7 +46,7 @@ class Resource
     }
 
     /**
-     * Create a new class instance from a Horizon response.
+     * Create a new resource instance from a Horizon response.
      *
      * @param Response $response
      * @throws UnexpectedValueException
@@ -58,7 +58,7 @@ class Resource
     }
 
     /**
-     * Allow a child resource to be created from the parent resource.
+     * Allow a child resource to be created from a parent resource.
      *
      * @param Resource $resource
      * @return static
