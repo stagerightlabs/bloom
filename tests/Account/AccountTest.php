@@ -15,7 +15,6 @@ use StageRightLabs\Bloom\Exception\InvalidKeyException;
 use StageRightLabs\Bloom\Horizon\AccountBalanceResource;
 use StageRightLabs\Bloom\Horizon\AccountResource;
 use StageRightLabs\Bloom\Horizon\AccountSignerResource;
-use StageRightLabs\Bloom\Horizon\Resource;
 use StageRightLabs\Bloom\Horizon\Response;
 use StageRightLabs\Bloom\Keypair\Keypair;
 use StageRightLabs\Bloom\Primitives\UInt32;

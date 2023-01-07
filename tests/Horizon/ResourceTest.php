@@ -6,7 +6,6 @@ namespace StageRightLabs\Bloom\Tests\Horizon;
 
 use StageRightLabs\Bloom\Horizon\Resource;
 use StageRightLabs\Bloom\Horizon\Response;
-use StageRightLabs\Bloom\Horizon\TransactionResource;
 use StageRightLabs\Bloom\Tests\TestCase;
 use StageRightLabs\Bloom\Utility\Json;
 
