@@ -9,6 +9,8 @@ use StageRightLabs\Bloom\Account\AccountId;
 use StageRightLabs\Bloom\Bloom;
 use StageRightLabs\Bloom\Horizon\Error;
 use StageRightLabs\Bloom\Horizon\Response;
+use StageRightLabs\Bloom\Horizon\TransactionResource;
+use StageRightLabs\Bloom\Horizon\TransactionResourceCollection;
 use StageRightLabs\Bloom\Tests\TestCase;
 use StageRightLabs\Bloom\Transaction\SequenceNumber;
 
@@ -117,5 +119,55 @@ class AccountServiceTest extends TestCase
 
         $account = $bloom->account->incrementSequenceNumber($account, 2);
         $this->assertTrue($account->getSequenceNumber()->isEqualTo(4));
+    }
+
+    /**
+     * @test
+     * @covers ::transactions
+     */
+    public function it_can_fetch_account_transactions()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('account_transactions'));
+        $collection = $bloom->account->transactions('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
+
+        $this->assertInstanceOf(TransactionResourceCollection::class, $collection);
+        foreach ($collection as $r) {
+            $this->assertInstanceOf(TransactionResource::class, $r);
+        }
+    }
+
+    /**
+     * @test
+     * @covers ::transactions
+     */
+    public function it_adjusts_for_invalid_query_parameters()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('account_transactions'));
+        $collection = $bloom->account->transactions(
+            account: 'GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW',
+            order: 'foo',
+            limit: 1000
+        );
+
+        $this->assertInstanceOf(TransactionResourceCollection::class, $collection);
+        $this->assertEquals(
+            'https://horizon-testnet.stellar.org/accounts/GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW/transactions?cursor=&limit=10&order=asc',
+            $collection->getSelfLink()
+        );
+    }
+
+    /**
+     * @test
+     * @covers ::transactions
+     */
+    public function it_returns_an_error_if_the_transactions_request_failed()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('generic_error', statusCode: 400));
+        $collection = $bloom->account->transactions('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
+
+        $this->assertInstanceOf(Error::class, $collection);
     }
 }
