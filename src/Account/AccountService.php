@@ -49,17 +49,17 @@ final class AccountService extends Service
             $keypair = Keypair::fromAddress($addressable);
         }
 
-        $resource = $this->bloom->horizon->get(
+        $response = $this->bloom->horizon->get(
             $this->bloom->config->getNetworkUrl("accounts/{$keypair->getAddress()}")
         );
 
-        if ($resource instanceof Error) {
-            return $resource;
+        if ($response instanceof Error) {
+            return $response;
         }
 
         return (new Account())
             ->withKeyPair($keypair)
-            ->withAccountResource(AccountResource::fromResource($resource));
+            ->withAccountResource(AccountResource::fromResponse($response));
     }
 
     /**

@@ -26,9 +26,9 @@ class HorizonServiceTest extends TestCase
         $bloom = Bloom::fake();
         $bloom->horizon->withResponse(new Response(200, [], 'fake resource'));
 
-        $resource = $bloom->horizon->get('some/url');
+        $response = $bloom->horizon->get('some/url');
 
-        $this->assertEquals($resource->getResponse()->getBody(), 'fake resource');
+        $this->assertEquals($response->getBody(), 'fake resource');
     }
 
     /**
@@ -40,11 +40,11 @@ class HorizonServiceTest extends TestCase
         $bloom = Bloom::fake();
         $bloom->horizon->withResponse(new Response(200, [], 'fake resource'));
 
-        $resource = $bloom->horizon->post('some/url', [
+        $response = $bloom->horizon->post('some/url', [
             'foo' => 'bar',
         ]);
 
-        $this->assertEquals($resource->getResponse()->getBody(), 'fake resource');
+        $this->assertEquals($response->getBody(), 'fake resource');
     }
 
     /**

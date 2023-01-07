@@ -62,7 +62,7 @@ final class EnvelopeService extends Service
         ]);
 
         return (!$response instanceof Error)
-            ? TransactionResource::fromResource($response)
+            ? TransactionResource::fromResponse($response)
             : $response;
     }
 

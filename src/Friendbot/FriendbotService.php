@@ -33,7 +33,7 @@ final class FriendbotService extends Service
         $response = $this->bloom->horizon->get($url);
 
         return (!$response instanceof Error)
-            ? TransactionResource::fromResource($response)
+            ? TransactionResource::fromResponse($response)
             : $response;
     }
 }

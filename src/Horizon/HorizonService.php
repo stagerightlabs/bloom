@@ -18,15 +18,15 @@ final class HorizonService extends Service
      * Perform a 'GET' request.
      *
      * @param string $url
-     * @return Resource|Error
+     * @return Response|Error
      */
-    public function get(string $url): Resource|Error
+    public function get(string $url): Response|Error
     {
         $response = $this->getClient()->get($url);
 
         return $this->responseIsAnError($response)
             ? Error::fromResponse($response)
-            : Resource::fromResponse($response);
+            : $response;
     }
 
     /**
@@ -34,15 +34,15 @@ final class HorizonService extends Service
      *
      * @param string $url
      * @param array<string, string> $params
-     * @return Resource|Error
+     * @return Response|Error
      */
-    public function post(string $url, array $params = []): Resource|Error
+    public function post(string $url, array $params = []): Response|Error
     {
         $response = $this->getClient()->post($url, $params);
 
         return $this->responseIsAnError($response)
             ? Error::fromResponse($response)
-            : Resource::fromResponse($response);
+            : $response;
     }
 
     /**

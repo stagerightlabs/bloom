@@ -88,19 +88,6 @@ class ResourceTest extends TestCase
 
     /**
      * @test
-     * @covers ::fromResource
-     */
-    public function a_child_resource_can_be_created_from_a_generic_resource()
-    {
-        $resource = Resource::fromResponse(Response::fake('example'));
-        $child = TransactionResource::fromResource($resource);
-
-        $this->assertInstanceOf(TransactionResource::class, $child);
-        $this->assertEquals(['[foo]' => '[bar]'], $child->toJson()->getAll());
-    }
-
-    /**
-     * @test
      * @covers ::toArray
      */
     public function it_can_be_converted_to_an_array()

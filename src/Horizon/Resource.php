@@ -58,17 +58,6 @@ class Resource
     }
 
     /**
-     * Allow a child resource to be created from a parent resource.
-     *
-     * @param Resource $resource
-     * @return static
-     */
-    public static function fromResource(Resource $resource): static
-    {
-        return new static($resource->toJson(), $resource->getResponse());
-    }
-
-    /**
      * Return the original server response.
      *
      * @return Response|null
