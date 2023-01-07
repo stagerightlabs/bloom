@@ -26,16 +26,6 @@ use StageRightLabs\PhpXdr\XDR;
 abstract class Arr implements XdrArray, Iterator, Countable, ArrayAccess
 {
     /**
-     * Ensure there is always a valid underlying array.
-     *
-     * @param array<mixed> $arr
-     */
-    final public function __construct($arr = [])
-    {
-        $this->arr = $arr;
-    }
-
-    /**
      * @var int
      */
     protected int $position = 0;
@@ -44,6 +34,16 @@ abstract class Arr implements XdrArray, Iterator, Countable, ArrayAccess
      * @var array<int, TValue>
      */
     protected array $arr;
+
+    /**
+     * Ensure there is always a valid underlying array.
+     *
+     * @param array<mixed> $arr
+     */
+    final public function __construct($arr = [])
+    {
+        $this->arr = $arr;
+    }
 
     /**
      * Wrap an array with this class. Same as 'make' but accepts mixed values.

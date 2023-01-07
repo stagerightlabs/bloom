@@ -59,18 +59,32 @@ class Url
      * @param string $url
      * @return array<int|string, array<int, string>|string>
      */
-    public static function query(string $url): array
+    public static function parameters(string $url): array
     {
-        $query = parse_url($url, PHP_URL_QUERY);
-        $query = $query ? $query : '';
-
+        $query = strval(parse_url($url, PHP_URL_QUERY));
         parse_str($query, $payload);
 
         return $payload;
     }
 
     /**
-     * Return the base of a given URL: the scheme and the authority.
+     * Extract a query string parameter from a URL.
+     *
+     * @param string $url
+     * @param string $key
+     * @return string|null
+     */
+    public static function parameter(string $url, string $key): ?string
+    {
+        $parameters = self::parameters($url);
+
+        return array_key_exists($key, $parameters)
+            ? strval($parameters[$key])
+            : null;
+    }
+
+    /**
+     * Return the base of a given URL; the scheme and the authority.
      *
      * @param string $url
      * @return string

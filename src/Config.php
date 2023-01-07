@@ -186,7 +186,11 @@ final class Config
      */
     public function getNetworkUrl(string $path = '/', array $query = []): string
     {
-        return Url::build(strval($this->state[self::NETWORK_URL]), $path, $query);
+        return Url::build(
+            strval($this->state[self::NETWORK_URL]),
+            $path,
+            array_filter($query)
+        );
     }
 
     /**

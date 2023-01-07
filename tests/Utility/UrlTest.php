@@ -12,7 +12,7 @@ use StageRightLabs\Bloom\Utility\Url;
  */
 class UrlTest extends TestCase
 {
-    public const EXAMPLE = 'https://developer.mozilla.org/en-US/search?q=URL';
+    public const EXAMPLE = 'https://developer.mozilla.org/en-US/search?q=URL&r=1';
     public const EXAMPLE_WITH_PORT = 'https://developer.mozilla.org:80/en-US/search?q=URL';
 
     /**
@@ -49,12 +49,27 @@ class UrlTest extends TestCase
 
     /**
      * @test
-     * @covers ::query
+     * @covers ::parameters
      */
     public function it_returns_the_query_string_parameters_as_an_array()
     {
-        $this->assertEquals(['q' => 'URL'], Url::query(self::EXAMPLE));
-        $this->assertEquals([], Url::query(''));
+        $expected = [
+            'q' => 'URL',
+            'r' => '1'
+        ];
+        $this->assertEquals($expected, Url::parameters(self::EXAMPLE));
+        $this->assertEquals([], Url::parameters(''));
+    }
+
+    /**
+     * @test
+     * @covers ::parameter
+     */
+    public function it_returns_a_single_query_string_parameter()
+    {
+        $this->assertEquals('URL', Url::parameter(self::EXAMPLE, 'q'));
+        $this->assertEquals('1', Url::parameter(self::EXAMPLE, 'r'));
+        $this->assertNull(Url::parameter(self::EXAMPLE, 'foo'));
     }
 
     /**
