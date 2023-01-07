@@ -236,4 +236,34 @@ class ResourceCollectionTest extends TestCase
             $collection->getSelfLink()
         );
     }
+
+    /**
+     * @test
+     * @covers ::getNextLink
+     * @covers ::getNextPagingToken
+     */
+    public function it_returns_the_link_to_the_next_page_of_transactions()
+    {
+        $collection = ResourceCollection::fromResponse(Response::fake('account_transactions'));
+        $this->assertEquals(
+            'https://horizon-testnet.stellar.org/accounts/GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW/transactions?cursor=1116579827830784&limit=10&order=asc',
+            $collection->getNextLink()
+        );
+        $this->assertEquals('1116579827830784', $collection->getNextPagingToken());
+    }
+
+    /**
+     * @test
+     * @covers ::getPreviousLink
+     * @covers ::getPreviousPagingToken
+     */
+    public function it_returns_the_link_to_the_previous_page_of_transactions()
+    {
+        $collection = ResourceCollection::fromResponse(Response::fake('account_transactions'));
+        $this->assertEquals(
+            'https://horizon-testnet.stellar.org/accounts/GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW/transactions?cursor=1115351467184128&limit=10&order=desc',
+            $collection->getPreviousLink()
+        );
+        $this->assertEquals('1115351467184128', $collection->getPreviousPagingToken());
+    }
 }

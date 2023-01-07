@@ -9,6 +9,7 @@ use Countable;
 use Iterator;
 use StageRightLabs\Bloom\Exception\UnexpectedValueException;
 use StageRightLabs\Bloom\Utility\Json;
+use StageRightLabs\Bloom\Utility\Url;
 
 /**
  * @template TValue
@@ -291,5 +292,49 @@ class ResourceCollection implements Iterator, Countable, ArrayAccess
     public function getSelfLink(): ?string
     {
         return $this->getLink('self');
+    }
+
+    /**
+     * Return the link to the next page of transaction records, if available.
+     *
+     * @return string|null
+     */
+    public function getNextLink(): ?string
+    {
+        return $this->getLink('next');
+    }
+
+    /**
+     * Return the paging token for the next page of transaction records, if available.
+     *
+     * @return string|null
+     */
+    public function getNextPagingToken(): ?string
+    {
+        return $this->getNextLink()
+            ? Url::parameter($this->getNextLink(), 'cursor')
+            : null;
+    }
+
+    /**
+     * Return the link to the previous page of transaction records, if available.
+     *
+     * @return string|null
+     */
+    public function getPreviousLink(): ?string
+    {
+        return $this->getLink('prev');
+    }
+
+    /**
+     * Return the paging token for the previous page of transaction records, if available.
+     *
+     * @return string|null
+     */
+    public function getPreviousPagingToken(): ?string
+    {
+        return $this->getPreviousLink()
+            ? Url::parameter($this->getPreviousLink(), 'cursor')
+            : null;
     }
 }
