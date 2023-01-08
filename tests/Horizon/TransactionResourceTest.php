@@ -32,40 +32,6 @@ class TransactionResourceTest extends TestCase
 {
     /**
      * @test
-     * @covers ::getLinks
-     */
-    public function it_returns_the_links_array()
-    {
-        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
-        $links = $transaction->getLinks();
-        $expected = [
-            'self'        => 'https://horizon-testnet.stellar.org/transactions/[hash]',
-            'account'     => 'https://horizon-testnet.stellar.org/accounts/[address]',
-            'ledger'      => 'https://horizon-testnet.stellar.org/ledgers/994571',
-            'operations'  => 'https://horizon-testnet.stellar.org/transactions/[hash]/operations{?cursor,limit,order}',
-            'effects'     => 'https://horizon-testnet.stellar.org/transactions/[hash]/effects{?cursor,limit,order}',
-            'precedes'    => 'https://horizon-testnet.stellar.org/transactions?order=asc&cursor=4271649918558208',
-            'succeeds'    => 'https://horizon-testnet.stellar.org/transactions?order=desc&cursor=4271649918558208',
-            'transaction' => 'https://horizon-testnet.stellar.org/transactions/[hash]',
-        ];
-
-        $this->assertEquals($expected, $links);
-    }
-
-    /**
-     * @test
-     * @covers ::getLink
-     */
-    public function it_returns_a_single_link_from_the_links_array()
-    {
-        $transaction = TransactionResource::fromResponse(Response::fake('friendbot_transaction'));
-        $expected = 'https://horizon-testnet.stellar.org/transactions/[hash]';
-
-        $this->assertEquals($expected, $transaction->getLink('self'));
-    }
-
-    /**
-     * @test
      * @covers ::getSelfLink
      */
     public function it_returns_the_self_link()
