@@ -177,20 +177,13 @@ final class Config
     }
 
     /**
-     * Return the network URL. You can optionally provide a path and query
-     * string values to be appended to the URL.
+     * Return the network URL.
      *
-     * @param string $path
-     * @param array<string, mixed> $query
      * @return string
      */
-    public function getNetworkUrl(string $path = '/', array $query = []): string
+    public function getNetworkUrl(): string
     {
-        return Url::build(
-            strval($this->state[self::NETWORK_URL]),
-            $path,
-            array_filter($query)
-        );
+        return strval($this->state[self::NETWORK_URL]);
     }
 
     /**

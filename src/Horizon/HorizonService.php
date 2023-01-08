@@ -6,6 +6,7 @@ namespace StageRightLabs\Bloom\Horizon;
 
 use StageRightLabs\Bloom\Service;
 use StageRightLabs\Bloom\Utility\Copy;
+use StageRightLabs\Bloom\Utility\Url;
 
 final class HorizonService extends Service
 {
@@ -78,6 +79,22 @@ final class HorizonService extends Service
     private function createFakeHttpClient(): FakeHttp
     {
         return new FakeHttp($this->mockedResponses);
+    }
+
+    /**
+     * Build a Horizon endpoint URL from component parts.
+     *
+     * @param string $path
+     * @param array<string, string|int|bool|null> $parameters
+     * @return string
+     */
+    public function url($path = '/', $parameters = []): string
+    {
+        return Url::build(
+            $this->bloom->config->getNetworkUrl(),
+            $path,
+            $parameters
+        );
     }
 
     /**

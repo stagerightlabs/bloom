@@ -101,4 +101,20 @@ class UrlTest extends TestCase
             ['foo' => 'bar']
         ));
     }
+
+    /**
+     * @test
+     * @covers ::build
+     */
+    public function it_converts_booleans_to_strings_in_url_query_parameters()
+    {
+        $params = [
+            'foo' => true,
+            'bar' => false,
+            'baz' => null,
+        ];
+        $url = Url::build('http://example.com', 'path', $params);
+
+        $this->assertEquals('http://example.com/path?foo=true&bar=false', $url);
+    }
 }

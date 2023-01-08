@@ -98,15 +98,36 @@ class Url
      * Build a URL from a base, path and set of optional query string parameters.
      *
      * @param string $base
-     * @param array<string, mixed> $params
+     * @param array<string, string|int|bool|null> $params
      * @return string
      */
     public static function build(string $base, string $path = '/', array $params = []): string
     {
+        // Remove null values from the parameters array
+        $params = array_filter($params, fn ($e) => $e !== null);
+
+        // Convert parameter values to strings
+        $params = array_map(function ($value) {
+            // True values will be converted to the string 'true'
+            if ($value === true) {
+                $value = 'true';
+            }
+
+            // False values will be converted to the string 'false'
+            if ($value === false) {
+                $value = 'false';
+            }
+
+            // Ensure everything else is converted to a string
+            return strval($value);
+        }, $params);
+
+        // Prepare the URL components
         $base = self::base($base);
         $path = str_starts_with($path, '/') ? $path : '/' . $path;
         $query = empty($params) ? '' : '?' . http_build_query($params);
 
+        // Return the constructed URL
         return $base . $path . $query;
     }
 }

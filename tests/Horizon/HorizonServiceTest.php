@@ -73,6 +73,20 @@ class HorizonServiceTest extends TestCase
 
     /**
      * @test
+     * @covers ::url
+     */
+    public function it_can_build_an_endpoint_url()
+    {
+        $bloom = new Bloom([
+            'network_url' => 'https://www.example.com'
+        ]);
+        $url = $bloom->horizon->url('foo/bar', ['baz' => 'bat']);
+
+        $this->assertEquals('https://www.example.com/foo/bar?baz=bat', $url);
+    }
+
+    /**
+     * @test
      * @covers ::withResponse
      * @covers ::hasMockedResponses
      */

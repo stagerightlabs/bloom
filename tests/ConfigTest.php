@@ -149,8 +149,7 @@ class ConfigTest extends TestCase
         $configB = $configA->withNetworkUrl('https://www.example.com');
 
         $this->assertEquals(Bloom::TEST_NETWORK_URL, $configA->getNetworkUrl());
-        $this->assertEquals('https://www.example.com/', $configB->getNetworkUrl());
-        $this->assertEquals('https://www.example.com/foo/bar?baz=bat', $configB->getNetworkUrl('foo/bar', ['baz' => 'bat']));
+        $this->assertEquals('https://www.example.com', $configB->getNetworkUrl());
     }
 
     /**

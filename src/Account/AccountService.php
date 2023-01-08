@@ -50,9 +50,8 @@ final class AccountService extends Service
             $keypair = Keypair::fromAddress($addressable);
         }
 
-        $response = $this->bloom->horizon->get(
-            $this->bloom->config->getNetworkUrl("accounts/{$keypair->getAddress()}")
-        );
+        $url = $this->bloom->horizon->url("accounts/{$keypair->getAddress()}");
+        $response = $this->bloom->horizon->get($url);
 
         if ($response instanceof Error) {
             return $response;
@@ -130,7 +129,7 @@ final class AccountService extends Service
         $account = Account::fromAddress($account);
 
         // Build the request URL
-        $url = $this->bloom->config->getNetworkUrl(
+        $url = $this->bloom->horizon->url(
             "accounts/{$account->getAddress()}/transactions",
             [
                 'cursor'         => $cursor,

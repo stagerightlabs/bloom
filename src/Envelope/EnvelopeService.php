@@ -56,7 +56,7 @@ final class EnvelopeService extends Service
      */
     public function post(TransactionEnvelope $envelope): TransactionResource|Error
     {
-        $url = $this->bloom->config->getNetworkUrl('transactions');
+        $url = $this->bloom->horizon->url('transactions');
         $response = $this->bloom->horizon->post($url, [
             'tx' => XDR::fresh()->write($envelope)->toBase64()
         ]);
