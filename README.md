@@ -1,5 +1,7 @@
 ![Bloom Stellar SDK](https://banners.beyondco.de/Bloom.png?theme=light&packageManager=composer+require&packageName=stagerightlabs%2Fbloom&pattern=graphPaper&style=style_1&description=An+unofficial+Stellar+Horizon+SDK&md=1&showWatermark=1&fontSize=100px&images=beaker)
 
+[![Tests](https://github.com/stagerightlabs/bloom/actions/workflows/tests.yml/badge.svg)](https://github.com/stagerightlabs/bloom/actions/workflows/tests.yml)
+
 Bloom is an unofficial PHP SDK library for the [Stellar](https://stellar.org/) [Horizon API](https://developers.stellar.org/docs/).
 
 I was inspired to create this library after being introduced to [Stellar Quest](https://quest.stellar.org/); a remarkable platform for discovering and exploring the building blocks of the Stellar network. I wanted to see if I could solve the exercises in PHP rather than Javascript or Golang. After many months this library is the result of that effort.
