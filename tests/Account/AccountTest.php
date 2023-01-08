@@ -15,7 +15,6 @@ use StageRightLabs\Bloom\Exception\InvalidKeyException;
 use StageRightLabs\Bloom\Horizon\AccountBalanceResource;
 use StageRightLabs\Bloom\Horizon\AccountResource;
 use StageRightLabs\Bloom\Horizon\AccountSignerResource;
-use StageRightLabs\Bloom\Horizon\Resource;
 use StageRightLabs\Bloom\Horizon\Response;
 use StageRightLabs\Bloom\Keypair\Keypair;
 use StageRightLabs\Bloom\Primitives\UInt32;
@@ -251,9 +250,9 @@ class AccountTest extends TestCase
      */
     public function it_accepts_an_account_resource()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertFalse($accountA->hasBeenLoaded());
         $this->assertTrue($accountB->hasBeenLoaded());
@@ -327,9 +326,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_self_link_when_available()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getSelfLink());
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]', $accountB->getSelfLink());
@@ -341,9 +340,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_transactions_link_when_available()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getTransactionsLink());
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/transactions{?cursor,limit,order}', $accountB->getTransactionsLink());
@@ -355,9 +354,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_operations_link_when_available()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getOperationsLink());
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/operations{?cursor,limit,order}', $accountB->getOperationsLink());
@@ -369,9 +368,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_payments_link_when_available()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getPaymentsLink());
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/payments{?cursor,limit,order}', $accountB->getPaymentsLink());
@@ -383,9 +382,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_effects_link_when_available()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getEffectsLink());
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/effects{?cursor,limit,order}', $accountB->getEffectsLink());
@@ -397,9 +396,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_offers_link_when_available()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getOffersLink());
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/offers{?cursor,limit,order}', $accountB->getOffersLink());
@@ -411,9 +410,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_trades_link_when_available()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getTradesLink());
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/trades{?cursor,limit,order}', $accountB->getTradesLink());
@@ -425,9 +424,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_data_link_when_available()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getDataLink());
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/data/{key}', $accountB->getDataLink());
@@ -439,11 +438,11 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_resource_id()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account', [
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account', [
             'address' => 'GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW'
         ]));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getResourceId());
         $this->assertEquals('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW', $accountB->getResourceId());
@@ -455,9 +454,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_sequence_ledger()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getSequenceLedger());
         $this->assertInstanceOf(UInt32::class, $accountB->getSequenceLedger());
@@ -470,9 +469,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_sequence_time()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getSequenceTime());
         $this->assertInstanceOf(UInt64::class, $accountB->getSequenceTime());
@@ -485,9 +484,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_sub_entry_count()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getSubEntryCount());
         $this->assertInstanceOf(UInt32::class, $accountB->getSubEntryCount());
@@ -500,9 +499,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_home_domain()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getHomeDomain());
         $this->assertEquals('[domain]', $accountB->getHomeDomain());
@@ -514,9 +513,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_last_modified_ledger_sequence()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getLastModifiedLedgerSequence());
         $this->assertInstanceOf(UInt32::class, $accountB->getLastModifiedLedgerSequence());
@@ -529,9 +528,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_reserves_sponsoring_count()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getReservesSponsoringCount());
         $this->assertInstanceOf(UInt32::class, $accountB->getReservesSponsoringCount());
@@ -544,9 +543,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_reserves_sponsored_count()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getReservesSponsoredCount());
         $this->assertInstanceOf(UInt32::class, $accountB->getReservesSponsoredCount());
@@ -559,9 +558,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_sponsor_id()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getSponsorId());
         $this->assertEquals('[sponsor]', $accountB->getSponsorId());
@@ -573,9 +572,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_low_threshold()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getLowThreshold());
         $this->assertInstanceOf(UInt32::class, $accountB->getLowThreshold());
@@ -588,9 +587,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_medium_threshold()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getMediumThreshold());
         $this->assertInstanceOf(UInt32::class, $accountB->getMediumThreshold());
@@ -603,9 +602,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_high_threshold()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getHighThreshold());
         $this->assertInstanceOf(UInt32::class, $accountB->getHighThreshold());
@@ -618,9 +617,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_account_flags()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
         $expected = [
             'auth_required'         => true,
             'auth_revocable'        => true,
@@ -638,9 +637,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_auth_immutable_flag()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getAuthImmutableFlag());
         $this->assertEquals(true, $accountB->getAuthImmutableFlag());
@@ -652,9 +651,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_auth_required_flag()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getAuthRequiredFlag());
         $this->assertEquals(true, $accountB->getAuthRequiredFlag());
@@ -666,9 +665,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_auth_revocable_flag()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getAuthRevocableFlag());
         $this->assertEquals(true, $accountB->getAuthRevocableFlag());
@@ -680,9 +679,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_auth_clawback_enabled_flag()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
 
         $this->assertNull($accountA->getAuthClawbackEnabledFlag());
         $this->assertEquals(true, $accountB->getAuthClawbackEnabledFlag());
@@ -694,9 +693,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_account_balances()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
         $expected = [
             'balance'             => '10000.0000000',
             'buying_liabilities'  => '0.0000000',
@@ -715,9 +714,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_balance_for_a_given_asset()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
         $balance = $accountB->getBalanceForAsset('USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5');
 
         $this->assertInstanceOf(AccountBalanceResource::class, $balance);
@@ -732,9 +731,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_signers()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
         $expected = [
             'weight' => 1,
             'key'    => '[address]',
@@ -752,9 +751,9 @@ class AccountTest extends TestCase
      */
     public function it_returns_the_account_data()
     {
-        $resource = Resource::fromResponse(Response::fake('retrieve_account'));
+        $resource = AccountResource::fromResponse(Response::fake('retrieve_account'));
         $accountA = Account::fromAddress('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
-        $accountB = $accountA->withAccountResource(AccountResource::fromResource($resource));
+        $accountB = $accountA->withAccountResource($resource);
         $expected = [
             'foo' => 'bar',
         ];

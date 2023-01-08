@@ -26,9 +26,9 @@ class HorizonServiceTest extends TestCase
         $bloom = Bloom::fake();
         $bloom->horizon->withResponse(new Response(200, [], 'fake resource'));
 
-        $resource = $bloom->horizon->get('some/url');
+        $response = $bloom->horizon->get('some/url');
 
-        $this->assertEquals($resource->getResponse()->getBody(), 'fake resource');
+        $this->assertEquals($response->getBody(), 'fake resource');
     }
 
     /**
@@ -40,11 +40,11 @@ class HorizonServiceTest extends TestCase
         $bloom = Bloom::fake();
         $bloom->horizon->withResponse(new Response(200, [], 'fake resource'));
 
-        $resource = $bloom->horizon->post('some/url', [
+        $response = $bloom->horizon->post('some/url', [
             'foo' => 'bar',
         ]);
 
-        $this->assertEquals($resource->getResponse()->getBody(), 'fake resource');
+        $this->assertEquals($response->getBody(), 'fake resource');
     }
 
     /**
@@ -69,6 +69,20 @@ class HorizonServiceTest extends TestCase
         $bloom = Bloom::fake();
         $client = $bloom->horizon->getClient();
         $this->assertInstanceOf(FakeHttp::class, $client);
+    }
+
+    /**
+     * @test
+     * @covers ::url
+     */
+    public function it_can_build_an_endpoint_url()
+    {
+        $bloom = new Bloom([
+            'network_url' => 'https://www.example.com'
+        ]);
+        $url = $bloom->horizon->url('foo/bar', ['baz' => 'bat']);
+
+        $this->assertEquals('https://www.example.com/foo/bar?baz=bat', $url);
     }
 
     /**

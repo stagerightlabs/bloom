@@ -16,7 +16,7 @@ class Resource
     protected ?Response $response;
 
     /**
-     * Instantiate a new class instance.
+     * Instantiate a new resource instance.
      *
      * @param Json|array<int|string, mixed>|string $payload
      * @param Response|null $response
@@ -35,7 +35,7 @@ class Resource
     }
 
     /**
-     * Create a new class instance from an array.
+     * Create a new resource instance from an array.
      *
      * @param array<string, mixed> $payload
      * @return static
@@ -46,7 +46,7 @@ class Resource
     }
 
     /**
-     * Create a new class instance from a Horizon response.
+     * Create a new resource instance from a Horizon response.
      *
      * @param Response $response
      * @throws UnexpectedValueException
@@ -55,17 +55,6 @@ class Resource
     public static function fromResponse(Response $response): static
     {
         return new static(strval($response->getBody()), $response);
-    }
-
-    /**
-     * Allow a child resource to be created from the parent resource.
-     *
-     * @param Resource $resource
-     * @return static
-     */
-    public static function fromResource(Resource $resource): static
-    {
-        return new static($resource->toJson(), $resource->getResponse());
     }
 
     /**
@@ -108,5 +97,31 @@ class Resource
     public function requestFailed(): bool
     {
         return false;
+    }
+
+    /**
+     * Return the links array.
+     *
+     * @return array<string, string>
+     */
+    public function getLinks(): array
+    {
+        $arr = $this->payload->getArray('_links') ?? [];
+
+        return array_reduce(array_keys($arr), function ($carry, $key) use ($arr) {
+            $carry[$key] = $arr[$key]['href'];
+            return $carry;
+        }, []);
+    }
+
+    /**
+     * Return a single link from the links array.
+     *
+     * @param string $key
+     * @return string|null
+     */
+    public function getLink(string $key): ?string
+    {
+        return $this->payload->getString("_links.{$key}.href");
     }
 }

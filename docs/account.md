@@ -1,6 +1,6 @@
 # Accounts 
 
-Tools for working with Stellar accounts. These methods can be accessed by the 
+Tools for working with Stellar accounts. These methods can be accessed by the
 `account` property on a bloom instance: `$bloom->account`:
 
 
@@ -31,7 +31,7 @@ if ($account->hasBeenLoaded()) {
 
 ### Return Type
 
-`Account`
+`Account,Error`
 
 ### Further Reading:
 
@@ -60,6 +60,37 @@ $string = $sequenceNumber->toNativeString();
 ### Return Type
 
 `Account`
+
+## transactions()
+
+Retrieve a paginated listing of an Account's transactions.
+
+Example
+```php
+$account = $bloom->account->retrieve('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
+$transactions = $bloom->account->transactions(account: $account, limit: 20, order: 'desc')
+foreach ($transactions as $transaction) {
+    // do something with the transaction resource object.
+}
+```
+
+### Parameters
+
+| Name | Type | Notes |
+| ---- | ---- | ---- |
+| $account| `Account,Addressable,string` |
+| $cursor| `string,null` | A number that points to a specific location in a collection of responses. |
+| $order| `string` | The sort order for the transactions; either 'asc' or 'desc'. Defaults to ascending if no value is set. |
+| $limit| `int` | The maximum number of records returned. Must be between 1 and 200; the default is 10. |
+| $includeFailed| `bool` | When true, failed transactions will be included in the response. Default is false. |
+
+### Return Type
+
+`TransactionResourceCollection,Error`
+
+### Further Reading:
+
+- [https://developers.stellar.org/api/resources/accounts/transactions/](https://developers.stellar.org/api/resources/accounts/transactions/)
 
 ###### This page was dynamically generated from the AccountService source code.
 

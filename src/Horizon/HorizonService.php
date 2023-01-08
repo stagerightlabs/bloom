@@ -6,6 +6,7 @@ namespace StageRightLabs\Bloom\Horizon;
 
 use StageRightLabs\Bloom\Service;
 use StageRightLabs\Bloom\Utility\Copy;
+use StageRightLabs\Bloom\Utility\Url;
 
 final class HorizonService extends Service
 {
@@ -18,15 +19,15 @@ final class HorizonService extends Service
      * Perform a 'GET' request.
      *
      * @param string $url
-     * @return Resource|Error
+     * @return Response|Error
      */
-    public function get(string $url): Resource|Error
+    public function get(string $url): Response|Error
     {
         $response = $this->getClient()->get($url);
 
         return $this->responseIsAnError($response)
             ? Error::fromResponse($response)
-            : Resource::fromResponse($response);
+            : $response;
     }
 
     /**
@@ -34,15 +35,15 @@ final class HorizonService extends Service
      *
      * @param string $url
      * @param array<string, string> $params
-     * @return Resource|Error
+     * @return Response|Error
      */
-    public function post(string $url, array $params = []): Resource|Error
+    public function post(string $url, array $params = []): Response|Error
     {
         $response = $this->getClient()->post($url, $params);
 
         return $this->responseIsAnError($response)
             ? Error::fromResponse($response)
-            : Resource::fromResponse($response);
+            : $response;
     }
 
     /**
@@ -78,6 +79,22 @@ final class HorizonService extends Service
     private function createFakeHttpClient(): FakeHttp
     {
         return new FakeHttp($this->mockedResponses);
+    }
+
+    /**
+     * Build a Horizon endpoint URL from component parts.
+     *
+     * @param string $path
+     * @param array<string, string|int|bool|null> $parameters
+     * @return string
+     */
+    public function url($path = '/', $parameters = []): string
+    {
+        return Url::build(
+            $this->bloom->config->getNetworkUrl(),
+            $path,
+            $parameters
+        );
     }
 
     /**

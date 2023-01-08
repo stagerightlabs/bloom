@@ -19,32 +19,6 @@ use StageRightLabs\PhpXdr\XDR;
 class TransactionResource extends Resource
 {
     /**
-     * Return the links array.
-     *
-     * @return array<string, string>
-     */
-    public function getLinks(): array
-    {
-        $arr = $this->payload->getArray('_links') ?? [];
-
-        return array_reduce(array_keys($arr), function ($carry, $key) use ($arr) {
-            $carry[$key] = $arr[$key]['href'];
-            return $carry;
-        }, []);
-    }
-
-    /**
-     * Return a single link from the links array.
-     *
-     * @param string $key
-     * @return string|null
-     */
-    public function getLink(string $key): ?string
-    {
-        return $this->payload->getString("_links.{$key}.href");
-    }
-
-    /**
      * Return the 'self' link.
      *
      * @return string|null
