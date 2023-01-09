@@ -14,7 +14,7 @@ class TransactionResourceCollection extends ResourceCollection
      *
      * @return class-string
      */
-    protected function getResourceClass(): string
+    protected static function getResourceClass(): string
     {
         return TransactionResource::class;
     }

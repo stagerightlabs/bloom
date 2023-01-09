@@ -25,10 +25,10 @@ class AccountSignerResourceTest extends TestCase
      */
     public function it_returns_the_signer_weight()
     {
-        $resource = AccountSignerResource::fromArray(self::SIGNER_EXAMPLE);
+        $resource = AccountSignerResource::wrap(self::SIGNER_EXAMPLE);
         $this->assertEquals(10, $resource->getWeight()->toNativeInt());
 
-        $resource = AccountSignerResource::fromArray([]);
+        $resource = AccountSignerResource::wrap([]);
         $this->assertEquals(0, $resource->getWeight()->toNativeInt());
     }
 
@@ -38,13 +38,13 @@ class AccountSignerResourceTest extends TestCase
      */
     public function it_returns_the_sponsor_address_if_present()
     {
-        $resource = AccountSignerResource::fromArray(self::SIGNER_EXAMPLE);
+        $resource = AccountSignerResource::wrap(self::SIGNER_EXAMPLE);
         $this->assertEquals(
             'GDI73WJ4SX7LOG3XZDJC3KCK6ED6E5NBYK2JUBQSPBCNNWEG3ZN7T75U',
             $resource->getSponsor()
         );
 
-        $resource = AccountSignerResource::fromArray([]);
+        $resource = AccountSignerResource::wrap([]);
         $this->assertNull($resource->getSponsor());
     }
 
@@ -54,13 +54,13 @@ class AccountSignerResourceTest extends TestCase
      */
     public function it_returns_the_key_if_present()
     {
-        $resource = AccountSignerResource::fromArray(self::SIGNER_EXAMPLE);
+        $resource = AccountSignerResource::wrap(self::SIGNER_EXAMPLE);
         $this->assertEquals(
             'GDI73WJ4SX7LOG3XZDJC3KCK6ED6E5NBYK2JUBQSPBCNNWEG3ZN7T75U',
             $resource->getKey()
         );
 
-        $resource = AccountSignerResource::fromArray([]);
+        $resource = AccountSignerResource::wrap([]);
         $this->assertNull($resource->getKey());
     }
 
@@ -70,10 +70,10 @@ class AccountSignerResourceTest extends TestCase
      */
     public function it_returns_the_signer_type_if_present()
     {
-        $resource = AccountSignerResource::fromArray(self::SIGNER_EXAMPLE);
+        $resource = AccountSignerResource::wrap(self::SIGNER_EXAMPLE);
         $this->assertEquals('ed25519_public_key', $resource->getType());
 
-        $resource = AccountSignerResource::fromArray([]);
+        $resource = AccountSignerResource::wrap([]);
         $this->assertNull($resource->getType());
     }
 }

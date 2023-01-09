@@ -249,7 +249,9 @@ final class Error
     ];
 
     /**
-     * A sanity check for the API consumer: Did the request fail?
+     * A Horizon request will return an error or a resource/response. If given
+     * an error then the request was not successful. This mirrors a similar
+     * function on the Horizon/Resource class that returns false.
      *
      * @return bool
      */

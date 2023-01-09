@@ -391,7 +391,7 @@ class AccountResource extends Resource
     {
         if ($balances = $this->payload->getArray('balances')) {
             return array_map(function ($balance) {
-                return AccountBalanceResource::fromArray($balance);
+                return AccountBalanceResource::wrap($balance);
             }, $balances);
         }
 
@@ -413,7 +413,7 @@ class AccountResource extends Resource
         if ($balances = $this->payload->getArray('balances')) {
             foreach ($balances as $balance) {
                 if ($balance['asset_type'] == 'native' && $asset->isNative()) {
-                    return AccountBalanceResource::fromArray($balance);
+                    return AccountBalanceResource::wrap($balance);
                 }
 
                 if (
@@ -421,7 +421,7 @@ class AccountResource extends Resource
                     && $asset->getAssetCode() == $balance['asset_code']
                     && $asset->getIssuerAddress() == $balance['asset_issuer']
                 ) {
-                    return AccountBalanceResource::fromArray($balance);
+                    return AccountBalanceResource::wrap($balance);
                 }
             }
         }
@@ -439,7 +439,7 @@ class AccountResource extends Resource
     {
         if ($signers = $this->payload->getArray('signers')) {
             return array_map(function ($signer) {
-                return AccountSignerResource::fromArray($signer);
+                return AccountSignerResource::wrap($signer);
             }, $signers);
         }
 

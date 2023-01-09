@@ -18,9 +18,18 @@ class ResourceTest extends TestCase
      * @test
      * @covers ::__construct
      */
-    public function it_can_be_instantiated_with_an_array_constructor_payload()
+    public function it_will_be_constructed_with_an_empty_payload()
     {
-        $resource = new Resource(['foo' => 'bar']);
+        $this->assertEquals([], (new Resource())->toArray());
+    }
+
+    /**
+     * @test
+     * @covers ::wrap
+     */
+    public function it_can_wrap_an_array()
+    {
+        $resource = Resource::wrap(['foo' => 'bar']);
 
         $this->assertInstanceOf(Resource::class, $resource);
         $this->assertEquals(['foo' => 'bar'], $resource->toJson()->getAll());
@@ -28,11 +37,11 @@ class ResourceTest extends TestCase
 
     /**
      * @test
-     * @covers ::__construct
+     * @covers ::wrap
      */
-    public function it_can_be_instantiated_with_a_string_constructor_payload()
+    public function it_can_wrap_a_json_string()
     {
-        $resource = new Resource('{"foo": "bar"}');
+        $resource = Resource::wrap('{"foo": "bar"}');
 
         $this->assertInstanceOf(Resource::class, $resource);
         $this->assertEquals(['foo' => 'bar'], $resource->toJson()->getAll());
@@ -40,24 +49,12 @@ class ResourceTest extends TestCase
 
     /**
      * @test
-     * @covers ::__construct
+     * @covers ::wrap
      */
-    public function it_can_be_instantiated_with_a_json_object_constructor_payload()
+    public function it_can_wrap_a_json_object()
     {
         $json = Json::of('{"foo": "bar"}');
-        $resource = new Resource($json);
-
-        $this->assertInstanceOf(Resource::class, $resource);
-        $this->assertEquals(['foo' => 'bar'], $resource->toJson()->getAll());
-    }
-
-    /**
-     * @test
-     * @covers ::fromArray
-     */
-    public function it_can_be_instantiated_from_an_array()
-    {
-        $resource = Resource::fromArray(['foo' => 'bar']);
+        $resource = Resource::wrap($json);
 
         $this->assertInstanceOf(Resource::class, $resource);
         $this->assertEquals(['foo' => 'bar'], $resource->toJson()->getAll());
@@ -66,22 +63,13 @@ class ResourceTest extends TestCase
     /**
      * @test
      * @covers ::fromResponse
+     * @covers ::getResponse
      */
-    public function it_can_be_instantiated_from_a_response()
+    public function it_can_be_created_from_a_response()
     {
         $resource = Resource::fromResponse(Response::fake('example'));
 
         $this->assertInstanceOf(Resource::class, $resource);
-        $this->assertEquals(['[foo]' => '[bar]'], $resource->toJson()->getAll());
-    }
-
-    /**
-     * @test
-     * @covers ::getResponse
-     */
-    public function it_returns_the_original_response_when_present()
-    {
-        $resource = Resource::fromResponse(Response::fake('example', [], 400));
         $this->assertInstanceOf(Response::class, $resource->getResponse());
     }
 
@@ -91,7 +79,9 @@ class ResourceTest extends TestCase
      */
     public function it_can_be_converted_to_an_array()
     {
-        $resource = Resource::fromResponse(Response::fake('example'));
+        $response = Response::fake('example');
+        $resource = Resource::wrap($response->getBody());
+
         $this->assertEquals(['[foo]' => '[bar]'], $resource->toArray());
     }
 
@@ -101,7 +91,9 @@ class ResourceTest extends TestCase
      */
     public function it_can_be_converted_to_a_json_wrapper_object()
     {
-        $resource = Resource::fromResponse(Response::fake('example'));
+        $response = Response::fake('example');
+        $resource = Resource::wrap($response->getBody());
+
         $this->assertInstanceOf(Json::class, $resource->toJson());
     }
 
@@ -111,7 +103,7 @@ class ResourceTest extends TestCase
      */
     public function it_knows_that_it_represents_a_successful_request()
     {
-        $resource = Resource::fromResponse(Response::fake('example'));
+        $resource = Resource::wrap((Response::fake('example'))->getBody());
         $this->assertFalse($resource->requestFailed());
     }
 
@@ -121,8 +113,8 @@ class ResourceTest extends TestCase
      */
     public function it_returns_the_links_array()
     {
-        $transaction = Resource::fromResponse(Response::fake('friendbot_transaction'));
-        $links = $transaction->getLinks();
+        $resource = Resource::wrap(Response::fake('friendbot_transaction')->getBody());
+        $links = $resource->getLinks();
         $expected = [
             'self'        => 'https://horizon-testnet.stellar.org/transactions/[hash]',
             'account'     => 'https://horizon-testnet.stellar.org/accounts/[address]',
@@ -143,9 +135,9 @@ class ResourceTest extends TestCase
      */
     public function it_returns_a_single_link_from_the_links_array()
     {
-        $transaction = Resource::fromResponse(Response::fake('friendbot_transaction'));
+        $resource = Resource::wrap(Response::fake('friendbot_transaction')->getBody());
         $expected = 'https://horizon-testnet.stellar.org/transactions/[hash]';
 
-        $this->assertEquals($expected, $transaction->getLink('self'));
+        $this->assertEquals($expected, $resource->getLink('self'));
     }
 }

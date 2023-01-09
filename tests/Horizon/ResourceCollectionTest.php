@@ -17,11 +17,20 @@ class ResourceCollectionTest extends TestCase
     /**
      * @test
      * @covers ::__construct
+     */
+    public function it_will_be_constructed_with_an_empty_payload()
+    {
+        $this->assertEquals([], (new ResourceCollection())->toArray());
+    }
+
+    /**
+     * @test
+     * @covers ::wrap
      * @covers ::getResourceClass
      */
-    public function it_can_be_instantiated_with_an_array_payload()
+    public function it_can_wrap_an_array()
     {
-        $collection = new ResourceCollection([
+        $collection = ResourceCollection::wrap([
             '_embedded' => [
                 'records' => [
                     ['foo' => 'bar'],
@@ -38,33 +47,12 @@ class ResourceCollectionTest extends TestCase
 
     /**
      * @test
-     * @covers ::__construct
+     * @covers ::wrap
      * @covers ::getResourceClass
      */
-    public function it_can_be_instantiated_from_a_json_string()
+    public function it_can_wrap_a_json_string()
     {
-        $collection = new ResourceCollection('{"_embedded":{"records":[{"foo":"bar"},{"foo":"bar"}]}}');
-
-        $this->assertInstanceOf(ResourceCollection::class, $collection);
-        foreach ($collection as $resource) {
-            $this->assertInstanceOf(Resource::class, $resource);
-        }
-    }
-
-    /**
-     * @test
-     * @covers ::fromArray
-     */
-    public function it_can_be_instantiated_from_an_array()
-    {
-        $collection = ResourceCollection::fromArray([
-            '_embedded' => [
-                'records' => [
-                    ['foo' => 'bar'],
-                    ['foo' => 'bar']
-                ]
-            ]
-        ]);
+        $collection = ResourceCollection::wrap('{"_embedded":{"records":[{"foo":"bar"},{"foo":"bar"}]}}');
 
         $this->assertInstanceOf(ResourceCollection::class, $collection);
         foreach ($collection as $resource) {
@@ -173,7 +161,7 @@ class ResourceCollectionTest extends TestCase
     public function it_knows_when_it_is_empty()
     {
         $collectionA = ResourceCollection::fromResponse(Response::fake('account_transactions'));
-        $collectionB = new ResourceCollection();
+        $collectionB = ResourceCollection::wrap([]);
 
         $this->assertFalse($collectionA->isEmpty());
         $this->assertTrue($collectionB->isEmpty());
