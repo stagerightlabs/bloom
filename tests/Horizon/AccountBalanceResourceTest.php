@@ -41,7 +41,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_balance_as_a_string()
     {
-        $resource = AccountBalanceResource::fromArray(self::XLM_BALANCE_EXAMPLE);
+        $resource = AccountBalanceResource::wrap(self::XLM_BALANCE_EXAMPLE);
         $this->assertEquals('198.8944970', $resource->getBalance());
     }
 
@@ -51,7 +51,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_balance_as_an_int64()
     {
-        $resource = AccountBalanceResource::fromArray(self::XLM_BALANCE_EXAMPLE);
+        $resource = AccountBalanceResource::wrap(self::XLM_BALANCE_EXAMPLE);
         $this->assertInstanceOf(Int64::class, $resource->getDescaledBalance());
         $this->assertTrue($resource->getDescaledBalance()->isEqualTo('1988944970'));
     }
@@ -63,7 +63,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function the_default_balance_is_zero()
     {
-        $resource = AccountBalanceResource::fromArray([]);
+        $resource = AccountBalanceResource::wrap([]);
         $this->assertEquals('0', $resource->getBalance());
         $this->assertTrue($resource->getDescaledBalance()->isEqualTo('0'));
     }
@@ -74,7 +74,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_buying_liabilities_as_a_scaled_amount()
     {
-        $resource = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
+        $resource = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
         $this->assertInstanceOf(ScaledAmount::class, $resource->getBuyingLiabilities());
         $this->assertEquals('100.0000000', $resource->getBuyingLiabilities()->toNativeString());
     }
@@ -85,7 +85,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_buying_liabilities_as_an_int64()
     {
-        $resource = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
+        $resource = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
         $this->assertInstanceOf(Int64::class, $resource->getDescaledBuyingLiabilities());
         $this->assertEquals('1000000000', $resource->getDescaledBuyingLiabilities()->toNativeString());
     }
@@ -97,7 +97,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function the_default_buying_liabilities_value_is_zero()
     {
-        $resource = AccountBalanceResource::fromArray([]);
+        $resource = AccountBalanceResource::wrap([]);
         $this->assertEquals('0', $resource->getBuyingLiabilities());
         $this->assertTrue($resource->getDescaledBuyingLiabilities()->isEqualTo('0'));
     }
@@ -108,7 +108,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_selling_liabilities_as_a_scaled_amount()
     {
-        $resource = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
+        $resource = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
         $this->assertEquals('200.0000000', $resource->getSellingLiabilities());
     }
 
@@ -118,7 +118,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_descaled_selling_liabilities_as_an_int64()
     {
-        $resource = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
+        $resource = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
         $this->assertInstanceOf(Int64::class, $resource->getDescaledSellingLiabilities());
         $this->assertEquals('2000000000', $resource->getDescaledSellingLiabilities()->toNativeString());
     }
@@ -130,7 +130,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function the_default_selling_liabilities_value_is_zero()
     {
-        $resource = AccountBalanceResource::fromArray([]);
+        $resource = AccountBalanceResource::wrap([]);
         $this->assertEquals('0.0000000', $resource->getSellingLiabilities()->toNativeString());
         $this->assertTrue($resource->getDescaledSellingLiabilities()->isEqualTo('0'));
     }
@@ -141,7 +141,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_limit_as_a_scaled_amount()
     {
-        $resource = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
+        $resource = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
         $this->assertInstanceOf(ScaledAmount::class, $resource->getLimit());
         $this->assertEquals('12345678.0000000', $resource->getLimit()->toNativeString());
     }
@@ -152,7 +152,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_limit_as_an_int64()
     {
-        $resource = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
+        $resource = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
         $this->assertInstanceOf(Int64::class, $resource->getDescaledLimit());
         $this->assertEquals('123456780000000', $resource->getDescaledLimit()->toNativeString());
     }
@@ -164,7 +164,7 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_provides_a_default_limit()
     {
-        $resource = AccountBalanceResource::fromArray([]);
+        $resource = AccountBalanceResource::wrap([]);
         $this->assertEquals('922337203685.4775807', $resource->getLimit()->toNativeString());
         $this->assertEquals('9223372036854775807', $resource->getDescaledLimit()->toNativeString());
     }
@@ -175,9 +175,9 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_asset_type()
     {
-        $resourceA = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
-        $resourceB = AccountBalanceResource::fromArray(self::XLM_BALANCE_EXAMPLE);
-        $resourceC = AccountBalanceResource::fromArray([]);
+        $resourceA = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
+        $resourceB = AccountBalanceResource::wrap(self::XLM_BALANCE_EXAMPLE);
+        $resourceC = AccountBalanceResource::wrap([]);
 
         $this->assertEquals('credit_alphanum4', $resourceA->getAssetType());
         $this->assertEquals('native', $resourceB->getAssetType());
@@ -190,8 +190,8 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_knows_if_it_represents_the_native_asset()
     {
-        $resourceA = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
-        $resourceB = AccountBalanceResource::fromArray(self::XLM_BALANCE_EXAMPLE);
+        $resourceA = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
+        $resourceB = AccountBalanceResource::wrap(self::XLM_BALANCE_EXAMPLE);
 
         $this->assertFalse($resourceA->isNativeAsset());
         $this->assertTrue($resourceB->isNativeAsset());
@@ -203,9 +203,9 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_asset_code_if_present()
     {
-        $resourceA = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
-        $resourceB = AccountBalanceResource::fromArray(self::XLM_BALANCE_EXAMPLE);
-        $resourceC = AccountBalanceResource::fromArray([]);
+        $resourceA = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
+        $resourceB = AccountBalanceResource::wrap(self::XLM_BALANCE_EXAMPLE);
+        $resourceC = AccountBalanceResource::wrap([]);
 
         $this->assertEquals('PHP', $resourceA->getAssetCode());
         $this->assertEquals('XLM', $resourceB->getAssetCode());
@@ -218,9 +218,9 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_asset_issuer_if_present()
     {
-        $resourceA = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
-        $resourceB = AccountBalanceResource::fromArray(self::XLM_BALANCE_EXAMPLE);
-        $resourceC = AccountBalanceResource::fromArray([]);
+        $resourceA = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
+        $resourceB = AccountBalanceResource::wrap(self::XLM_BALANCE_EXAMPLE);
+        $resourceC = AccountBalanceResource::wrap([]);
 
         $this->assertEquals('GBUQWP3BOUZX34TOND2QV7QQ7K7VJTG6VSE7WMLBTMDJLLAW7YKGU6EP', $resourceA->getAssetIssuer());
         $this->assertNull($resourceB->getAssetIssuer());
@@ -233,9 +233,9 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_the_sponsor_if_present()
     {
-        $resourceA = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
-        $resourceB = AccountBalanceResource::fromArray(self::XLM_BALANCE_EXAMPLE);
-        $resourceC = AccountBalanceResource::fromArray([]);
+        $resourceA = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
+        $resourceB = AccountBalanceResource::wrap(self::XLM_BALANCE_EXAMPLE);
+        $resourceC = AccountBalanceResource::wrap([]);
 
         $this->assertEquals('GBUQWP3BOUZX34TOND2QV7QQ7K7VJTG6VSE7WMLBTMDJLLAW7YKGU6EP', $resourceA->getSponsor());
         $this->assertNull($resourceB->getSponsor());
@@ -248,9 +248,9 @@ class AccountBalanceResourceTest extends TestCase
      */
     public function it_returns_an_asset_identifier()
     {
-        $resourceA = AccountBalanceResource::fromArray(self::PHP_BALANCE_EXAMPLE);
-        $resourceB = AccountBalanceResource::fromArray(self::XLM_BALANCE_EXAMPLE);
-        $resourceC = AccountBalanceResource::fromArray([]);
+        $resourceA = AccountBalanceResource::wrap(self::PHP_BALANCE_EXAMPLE);
+        $resourceB = AccountBalanceResource::wrap(self::XLM_BALANCE_EXAMPLE);
+        $resourceC = AccountBalanceResource::wrap([]);
 
         $this->assertEquals('PHP:GBUQWP3BOUZX34TOND2QV7QQ7K7VJTG6VSE7WMLBTMDJLLAW7YKGU6EP', $resourceA->getCanonicalAssetName());
         $this->assertEquals('native', $resourceB->getCanonicalAssetName());

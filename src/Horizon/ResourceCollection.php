@@ -31,12 +31,23 @@ class ResourceCollection implements Iterator, Countable, ArrayAccess
     protected array $arr;
 
     /**
+     * Ensure this class can never be instantiated without a payload.
+     */
+    final public function __construct()
+    {
+        $this->payload = new Json();
+        $this->response = null;
+        $this->arr = [];
+    }
+
+    /**
      * Instantiate a new resource collection instance.
      *
      * @param Json|array<int|string, mixed>|string $payload
      * @param Response|null $response
+     * @return static
      */
-    final public function __construct(Json|array|string $payload = '', Response $response = null)
+    public static function wrap(Json|array|string $payload = '', Response $response = null): static
     {
         // Accept the Json Payload
         if (!$payload instanceof Json) {
@@ -44,19 +55,29 @@ class ResourceCollection implements Iterator, Countable, ArrayAccess
                 ? Json::fromArray($payload)
                 : Json::of($payload);
         }
-        $this->payload = $payload;
 
-        // Accept the response if present
-        $this->response = $response;
+        /**
+         * Define a mapping function to hydrate the member resources.
+         * Operation resources will use a different hydration strategy
+         * @var callable
+         */
+        $hydrator = static::getResourceClass() == OperationResource::class
+            ? [OperationResource::class, 'operation']
+            : [static::getResourceClass(), 'wrap'];
 
-        /** @var callable */
-        $map = [$this->getResourceClass(), 'fromArray'];
+        /**
+         * Convert the payload records into individual resource classes.
+         * @var array<int, TValue>
+         */
+        $arr = array_map($hydrator, $payload->getArray('_embedded.records') ?? []);
 
-        // Translate the records into individual resource classes
-        $this->arr = [];
-        foreach ($this->payload->getArray('_embedded.records') ?? [] as $resource) {
-            $this->arr[] = call_user_func($map, $resource);
-        }
+        // Create the new collection instance
+        $collection = new static();
+        $collection->payload = $payload;
+        $collection->response = $response;
+        $collection->arr = $arr;
+
+        return $collection;
     }
 
     /**
@@ -64,20 +85,9 @@ class ResourceCollection implements Iterator, Countable, ArrayAccess
      *
      * @return class-string
      */
-    protected function getResourceClass(): string
+    protected static function getResourceClass(): string
     {
         return Resource::class;
-    }
-
-    /**
-     * Create a new resource collection instance from an array.
-     *
-     * @param array<string, mixed> $payload
-     * @return static
-     */
-    public static function fromArray(array $payload = []): static
-    {
-        return new static($payload);
     }
 
     /**
@@ -89,7 +99,7 @@ class ResourceCollection implements Iterator, Countable, ArrayAccess
      */
     public static function fromResponse(Response $response): static
     {
-        return new static(strval($response->getBody()), $response);
+        return static::wrap(strval($response->getBody()), $response);
     }
 
     /**

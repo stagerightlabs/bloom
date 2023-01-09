@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace StageRightLabs\Bloom\Horizon;
 
-use StageRightLabs\Bloom\Exception\UnexpectedValueException;
 use StageRightLabs\Bloom\Utility\Json;
+use StageRightLabs\Bloom\Utility\NoConstructor;
 
 class Resource
 {
@@ -16,45 +16,45 @@ class Resource
     protected ?Response $response;
 
     /**
+     * Ensure this class can never be instantiated without a payload.
+     */
+    final public function __construct()
+    {
+        $this->payload = new Json();
+        $this->response = null;
+    }
+
+    /**
      * Instantiate a new resource instance.
      *
      * @param Json|array<int|string, mixed>|string $payload
      * @param Response|null $response
+     * @return static
      */
-    final public function __construct(Json|array|string $payload = '', Response $response = null)
+    public static function wrap(Json|array|string $payload = '', Response $response = null): static
     {
-        if ($payload instanceof Json) {
-            $this->payload = $payload;
-        } else {
-            $this->payload = is_array($payload)
+        if (!$payload instanceof Json) {
+            $payload = is_array($payload)
                 ? Json::fromArray($payload)
                 : Json::of($payload);
         }
 
-        $this->response = $response;
+        $resource = new static();
+        $resource->payload = $payload;
+        $resource->response = $response;
+
+        return $resource;
     }
 
     /**
-     * Create a new resource instance from an array.
-     *
-     * @param array<string, mixed> $payload
-     * @return static
-     */
-    public static function fromArray(array $payload = []): static
-    {
-        return new static($payload);
-    }
-
-    /**
-     * Create a new resource instance from a Horizon response.
+     * Create a resource from a response.
      *
      * @param Response $response
-     * @throws UnexpectedValueException
      * @return static
      */
     public static function fromResponse(Response $response): static
     {
-        return new static(strval($response->getBody()), $response);
+        return static::wrap($response->getBody(), $response);
     }
 
     /**
@@ -88,9 +88,9 @@ class Resource
     }
 
     /**
-     * A sanity check for the API consumer: Does this resource represent a
-     * failed request? This has been added for convenience but usage
-     * is not recommended.
+     * A Horizon request will return an error or a resource/response. If given
+     * a resource then the request was successful. This mirrors a similar
+     * function on the Horizon/Error class that returns true.
      *
      * @return bool
      */

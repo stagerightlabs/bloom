@@ -25,7 +25,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_links_array()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
         $links = $account->getLinks();
         $expected = [
             'self'         => 'https://horizon-testnet.stellar.org/accounts/[address]',
@@ -47,7 +49,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_a_single_link()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]', $account->getLink('self'));
     }
 
@@ -57,7 +62,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_self_link()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]', $account->getSelfLink());
     }
 
@@ -67,7 +75,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_transactions_link()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/transactions{?cursor,limit,order}', $account->getTransactionsLink());
     }
 
@@ -77,7 +88,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_operations_link()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/operations{?cursor,limit,order}', $account->getOperationsLink());
     }
 
@@ -87,7 +101,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_payments_link()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/payments{?cursor,limit,order}', $account->getPaymentsLink());
     }
 
@@ -97,7 +114,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_effects_link()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/effects{?cursor,limit,order}', $account->getEffectsLink());
     }
 
@@ -107,7 +127,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_offers_link()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/offers{?cursor,limit,order}', $account->getOffersLink());
     }
 
@@ -117,7 +140,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_trades_link()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/trades{?cursor,limit,order}', $account->getTradesLink());
     }
 
@@ -127,7 +153,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_data_link()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
         $this->assertEquals('https://horizon-testnet.stellar.org/accounts/[address]/data/{key}', $account->getDataLink());
     }
 
@@ -137,7 +165,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_account_identifier()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('[address]', $account->getId());
     }
 
@@ -147,9 +178,11 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_an_account_id()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account', [
-            'address' => 'GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW'
-        ]));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account', [
+                'address' => 'GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW'
+            ])->getBody()
+        );
 
         $this->assertInstanceOf(AccountId::class, $account->getAccountId());
         $this->assertEquals(
@@ -164,9 +197,11 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_account_id()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data', [
-            'address' => 'GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW'
-        ]));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data', [
+                'address' => 'GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW'
+            ])->getBody()
+        );
 
         $this->assertNull($account->getAccountId());
     }
@@ -177,7 +212,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_sequence_number()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
 
         $this->assertInstanceOf(SequenceNumber::class, $account->getSequenceNumber());
         $this->assertEquals('5607590906036224', $account->getSequenceNumber()->toNativeString());
@@ -189,7 +226,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_a_missing_sequence_number()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getSequenceNumber());
     }
 
@@ -199,7 +239,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_sequence_ledger()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
 
         $this->assertInstanceOf(UInt32::class, $account->getSequenceLedger());
         $this->assertEquals(50, $account->getSequenceLedger()->toNativeInt());
@@ -211,7 +253,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_a_missing_sequence_ledger()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getSequenceLedger());
     }
 
@@ -221,7 +266,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_sequence_time()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
 
         $this->assertInstanceOf(UInt64::class, $account->getSequenceTime());
         $this->assertEquals('100', $account->getSequenceTime()->toNativeString());
@@ -233,7 +280,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_sequence_time()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getSequenceTime());
     }
 
@@ -243,7 +293,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_sub_entry_count()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
 
         $this->assertInstanceOf(UInt32::class, $account->getSubEntryCount());
         $this->assertEquals(10, $account->getSubEntryCount()->toNativeInt());
@@ -255,7 +307,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_a_missing_sub_entry_count()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getSubEntryCount());
     }
 
@@ -265,7 +320,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_home_domain()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('[domain]', $account->getHomeDomain());
     }
 
@@ -275,7 +333,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_a_missing_home_domain()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getHomeDomain());
     }
 
@@ -285,7 +346,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_last_modified_ledger_sequence()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
 
         $this->assertInstanceOf(UInt32::class, $account->getLastModifiedLedgerSequence());
         $this->assertEquals(1305619, $account->getLastModifiedLedgerSequence()->toNativeInt());
@@ -297,7 +360,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_last_modified_ledger_sequence()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getLastModifiedLedgerSequence());
     }
 
@@ -307,7 +373,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_reserves_sponsoring_count()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
 
         $this->assertInstanceOf(UInt32::class, $account->getReservesSponsoringCount());
         $this->assertEquals(1, $account->getReservesSponsoringCount()->toNativeInt());
@@ -319,7 +387,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_reserves_sponsoring_count()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getReservesSponsoringCount());
     }
 
@@ -329,7 +400,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_reserves_sponsored_count()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
 
         $this->assertInstanceOf(UInt32::class, $account->getReservesSponsoredCount());
         $this->assertEquals(2, $account->getReservesSponsoredCount()->toNativeInt());
@@ -341,7 +414,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_reserves_sponsored_count()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getReservesSponsoredCount());
     }
 
@@ -351,7 +427,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_sponsor_id()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('[sponsor]', $account->getSponsorId());
     }
 
@@ -361,7 +440,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_sponsor_id()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getSponsorId());
     }
 
@@ -371,7 +453,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_low_threshold()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
 
         $this->assertInstanceOf(UInt32::class, $account->getLowThreshold());
         $this->assertEquals(1, $account->getLowThreshold()->toNativeInt());
@@ -383,7 +467,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_zero_for_missing_low_threshold()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertEquals(0, $account->getLowThreshold()->toNativeInt());
     }
 
@@ -393,7 +480,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_medium_threshold()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
 
         $this->assertInstanceOf(UInt32::class, $account->getMediumThreshold());
         $this->assertEquals(2, $account->getMediumThreshold()->toNativeInt());
@@ -405,7 +494,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_zero_for_missing_medium_threshold()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertEquals(0, $account->getMediumThreshold()->toNativeInt());
     }
 
@@ -415,7 +507,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_high_threshold()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
 
         $this->assertInstanceOf(UInt32::class, $account->getHighThreshold());
         $this->assertEquals(3, $account->getHighThreshold()->toNativeInt());
@@ -427,7 +521,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_zero_for_missing_high_threshold()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertEquals(0, $account->getHighThreshold()->toNativeInt());
     }
 
@@ -437,7 +534,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_flags()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
         $expected = [
             'auth_required'         => true,
             'auth_revocable'        => true,
@@ -454,7 +553,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_an_empty_array_for_missing_flags()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertEquals([], $account->getFlags());
     }
 
@@ -464,7 +566,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_auth_immutable_flag()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertTrue($account->getAuthImmutableFlag());
     }
 
@@ -474,7 +579,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_auth_immutable_flag()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getAuthImmutableFlag());
     }
 
@@ -484,7 +592,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_auth_required_flag()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertTrue($account->getAuthRequiredFlag());
     }
 
@@ -494,7 +605,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_auth_required_flag()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getAuthRequiredFlag());
     }
 
@@ -504,7 +618,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_auth_revocable_flag()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertTrue($account->getAuthRevocableFlag());
     }
 
@@ -514,7 +631,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_auth_revocable_flag()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getAuthRevocableFlag());
     }
 
@@ -524,7 +644,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_auth_clawback_enabled_flag()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertTrue($account->getAuthClawbackEnabledFlag());
     }
 
@@ -534,7 +657,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_missing_auth_clawback_enabled_flag()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertNull($account->getAuthClawbackEnabledFlag());
     }
 
@@ -544,7 +670,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_account_balances()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
         $expected = [
             'balance'             => '10000.0000000',
             'buying_liabilities'  => '0.0000000',
@@ -562,7 +690,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_an_empty_array_for_missing_balances()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertEquals([], $account->getBalances());
     }
 
@@ -572,7 +703,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_a_balance_for_a_given_asset_if_it_is_present()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
         $balance = $account->getBalanceForAsset('USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5');
 
         $this->assertInstanceOf(AccountBalanceResource::class, $balance);
@@ -586,7 +719,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_a_balance_for_the_native_asset()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
         $balance = $account->getBalanceForAsset('XLM');
 
         $this->assertInstanceOf(AccountBalanceResource::class, $balance);
@@ -600,7 +735,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_null_for_a_missing_asset()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertNull($account->getBalanceForAsset('FooBar:GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW'));
     }
 
@@ -610,7 +748,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_signers()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
         $expected = [
             'weight' => 1,
             'key'    => '[address]',
@@ -627,7 +767,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_an_empty_array_for_missing_signers()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertEquals([], $account->getSigners());
     }
 
@@ -637,7 +780,9 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_the_data_fields_array()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
         $expected = [
             'foo' => 'bar',
         ];
@@ -651,7 +796,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_returns_an_empty_array_for_missing_data_fields()
     {
-        $account = AccountResource::fromResponse(Response::fake('account_without_data'));
+        $account = AccountResource::wrap(
+            Response::fake('account_without_data')->getBody()
+        );
+
         $this->assertEquals([], $account->getData());
     }
 
@@ -661,7 +809,10 @@ class AccountResourceTest extends TestCase
      */
     public function it_can_return_a_specific_data_key_value()
     {
-        $account = AccountResource::fromResponse(Response::fake('retrieve_account'));
+        $account = AccountResource::wrap(
+            Response::fake('retrieve_account')->getBody()
+        );
+
         $this->assertEquals('bar', $account->getData('foo'));
     }
 }
