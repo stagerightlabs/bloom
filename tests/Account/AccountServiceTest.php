@@ -8,6 +8,7 @@ use StageRightLabs\Bloom\Account\Account;
 use StageRightLabs\Bloom\Account\AccountId;
 use StageRightLabs\Bloom\Bloom;
 use StageRightLabs\Bloom\Horizon\Error;
+use StageRightLabs\Bloom\Horizon\OperationResourceCollection;
 use StageRightLabs\Bloom\Horizon\Response;
 use StageRightLabs\Bloom\Horizon\TransactionResource;
 use StageRightLabs\Bloom\Horizon\TransactionResourceCollection;
@@ -123,13 +124,13 @@ class AccountServiceTest extends TestCase
 
     /**
      * @test
-     * @covers ::transactions
+     * @covers ::retrieveTransactions
      */
     public function it_can_fetch_account_transactions()
     {
         $bloom = Bloom::fake();
         $bloom->horizon->withResponse(Response::fake('account_transactions'));
-        $collection = $bloom->account->transactions('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
+        $collection = $bloom->account->retrieveTransactions('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
 
         $this->assertInstanceOf(TransactionResourceCollection::class, $collection);
         foreach ($collection as $r) {
@@ -139,13 +140,13 @@ class AccountServiceTest extends TestCase
 
     /**
      * @test
-     * @covers ::transactions
+     * @covers ::retrieveTransactions
      */
-    public function it_adjusts_for_invalid_query_parameters()
+    public function it_adjusts_for_invalid_transaction_query_parameters()
     {
         $bloom = Bloom::fake();
         $bloom->horizon->withResponse(Response::fake('account_transactions'));
-        $collection = $bloom->account->transactions(
+        $collection = $bloom->account->retrieveTransactions(
             account: 'GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW',
             order: 'foo',
             limit: 1000
@@ -160,13 +161,60 @@ class AccountServiceTest extends TestCase
 
     /**
      * @test
-     * @covers ::transactions
+     * @covers ::retrieveTransactions
      */
     public function it_returns_an_error_if_the_transactions_request_failed()
     {
         $bloom = Bloom::fake();
         $bloom->horizon->withResponse(Response::fake('generic_error', statusCode: 400));
-        $collection = $bloom->account->transactions('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
+        $collection = $bloom->account->retrieveTransactions('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
+
+        $this->assertInstanceOf(Error::class, $collection);
+    }
+
+    /**
+     * @test
+     * @covers ::retrieveOperations
+     */
+    public function it_returns_a_list_of_account_operations()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('account_operations'));
+        $collection = $bloom->account->retrieveOperations('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
+
+        $this->assertInstanceOf(OperationResourceCollection::class, $collection);
+    }
+
+    /**
+     * @test
+     * @covers ::retrieveOperations
+     */
+    public function it_adjusts_for_invalid_operation_query_parameters()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('account_operations'));
+        $collection = $bloom->account->retrieveOperations(
+            account: 'GAT5B2UXY5XAEHZWERXPC5OHUHUW6X74Y3ORCBICS5XFVMSGW3QGLEEK',
+            order: 'foo',
+            limit: 1000
+        );
+
+        $this->assertInstanceOf(OperationResourceCollection::class, $collection);
+        $this->assertEquals(
+            'https://horizon-testnet.stellar.org/accounts/GAT5B2UXY5XAEHZWERXPC5OHUHUW6X74Y3ORCBICS5XFVMSGW3QGLEEK/operations?cursor=&limit=10&order=asc',
+            $collection->getSelfLink()
+        );
+    }
+
+    /**
+     * @test
+     * @covers ::retrieveOperations
+     */
+    public function it_returns_an_error_if_the_operations_request_failed()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('generic_error', statusCode: 400));
+        $collection = $bloom->account->retrieveOperations('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
 
         $this->assertInstanceOf(Error::class, $collection);
     }

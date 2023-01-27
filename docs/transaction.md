@@ -198,5 +198,38 @@ Remove existing preconditions from a transaction.
 
 `Transaction`
 
+## preconditions()
+
+Retrieve existing preconditions from a transaction as a PreconditionsV2.
+
+### Parameters
+
+| Name | Type |
+| ---- | ---- |
+| $transaction| `Transaction` |
+
+### Return Type
+
+`PreconditionsV2`
+
+## retrieveOperations()
+
+Retrieve a list of operations from Horizon for a transaction.
+
+### Parameters
+
+| Name | Type |
+| ---- | ---- |
+| $transactionHash| `string` |
+| $cursor| `string,null` |
+| $order| `string` |
+| $limit| `int` |
+| $includeFailed| `bool` |
+| $includeTransactions| `bool` |
+
+### Return Type
+
+`OperationResourceCollection,Error`
+
 ###### This page was dynamically generated from the TransactionService source code.
 

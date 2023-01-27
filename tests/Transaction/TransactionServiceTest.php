@@ -8,6 +8,9 @@ use StageRightLabs\Bloom\Account\Account;
 use StageRightLabs\Bloom\Bloom;
 use StageRightLabs\Bloom\Envelope\TransactionEnvelope;
 use StageRightLabs\Bloom\Envelope\TransactionV1Envelope;
+use StageRightLabs\Bloom\Horizon\Error;
+use StageRightLabs\Bloom\Horizon\OperationResourceCollection;
+use StageRightLabs\Bloom\Horizon\Response;
 use StageRightLabs\Bloom\Operation\CreateAccountOp;
 use StageRightLabs\Bloom\Primitives\UInt32;
 use StageRightLabs\Bloom\Tests\TestCase;
@@ -94,7 +97,7 @@ class TransactionServiceTest extends TestCase
     /**
      * @test
      * @covers ::addMinimumTimePrecondition
-     * @covers ::fetchPreconditions
+     * @covers ::preconditions
      */
     public function it_can_add_a_minimum_time_precondition()
     {
@@ -113,7 +116,7 @@ class TransactionServiceTest extends TestCase
     /**
      * @test
      * @covers ::addMinimumTimePrecondition
-     * @covers ::fetchPreconditions
+     * @covers ::preconditions
      */
     public function it_can_add_a_minimum_time_precondition_overwriting_historical_timebounds()
     {
@@ -133,7 +136,7 @@ class TransactionServiceTest extends TestCase
     /**
      * @test
      * @covers ::addMinimumTimePrecondition
-     * @covers ::fetchPreconditions
+     * @covers ::preconditions
      */
     public function it_can_add_a_minimum_time_precondition_overwriting_existing_v2_preconditions()
     {
@@ -276,7 +279,7 @@ class TransactionServiceTest extends TestCase
     /**
      * @test
      * @covers ::removePreconditions
-     * @covers ::fetchPreconditions
+     * @covers ::preconditions
      */
     public function it_removes_preconditions()
     {
@@ -294,7 +297,7 @@ class TransactionServiceTest extends TestCase
 
     /**
      * @test
-     * @covers ::fetchPreconditions
+     * @covers ::preconditions
      */
     public function it_provides_a_preconditions_v2_set_if_nothing_else_is_defined()
     {
@@ -306,5 +309,52 @@ class TransactionServiceTest extends TestCase
         $this->assertInstanceOf(Transaction::class, $transaction);
         $this->assertInstanceOf(PreconditionsV2::class, $transaction->getPreconditions()->unwrap());
         $this->assertEquals(1640995200, $transaction->getPreconditions()->getTimeBounds()->getMinTime()->toNativeInt());
+    }
+
+    /**
+     * @test
+     * @covers ::retrieveOperations
+     */
+    public function it_can_retrieve_the_operations_for_a_transaction()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('transaction_operations'));
+        $collection = $bloom->transaction->retrieveOperations('6b983a4e0dc3c04f4bd6b9037c55f70a09c434dfd01492be1077cf7ea68c2e4a');
+
+        $this->assertInstanceOf(OperationResourceCollection::class, $collection);
+    }
+
+    /**
+     * @test
+     * @covers ::retrieveOperations
+     */
+    public function it_adjusts_for_invalid_operation_query_parameters()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('transaction_operations'));
+        $collection = $bloom->transaction->retrieveOperations(
+            transactionHash: '6b983a4e0dc3c04f4bd6b9037c55f70a09c434dfd01492be1077cf7ea68c2e4a',
+            order: 'foo',
+            limit: 1000
+        );
+
+        $this->assertInstanceOf(OperationResourceCollection::class, $collection);
+        $this->assertEquals(
+            'https://horizon.stellar.org/transactions/6b983a4e0dc3c04f4bd6b9037c55f70a09c434dfd01492be1077cf7ea68c2e4a/operations?cursor=&limit=10&order=asc',
+            $collection->getSelfLink()
+        );
+    }
+
+    /**
+     * @test
+     * @covers ::retrieveOperations
+     */
+    public function it_returns_an_error_if_the_operations_request_failed()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('generic_error', statusCode: 400));
+        $collection = $bloom->transaction->retrieveOperations('6b983a4e0dc3c04f4bd6b9037c55f70a09c434dfd01492be1077cf7ea68c2e4a');
+
+        $this->assertInstanceOf(Error::class, $collection);
     }
 }

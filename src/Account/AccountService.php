@@ -6,6 +6,7 @@ namespace StageRightLabs\Bloom\Account;
 
 use StageRightLabs\Bloom\Horizon\AccountResource;
 use StageRightLabs\Bloom\Horizon\Error;
+use StageRightLabs\Bloom\Horizon\OperationResourceCollection;
 use StageRightLabs\Bloom\Horizon\TransactionResourceCollection;
 use StageRightLabs\Bloom\Keypair\Keypair;
 use StageRightLabs\Bloom\Service;
@@ -108,7 +109,7 @@ final class AccountService extends Service
      * @param bool $includeFailed When true, failed transactions will be included in the response. Default is false.
      * @return TransactionResourceCollection|Error
      */
-    public function transactions(
+    public function retrieveTransactions(
         Account|Addressable|string $account,
         string $cursor = null,
         string $order = 'asc',
@@ -149,5 +150,71 @@ final class AccountService extends Service
 
         // Wrap the response in a transaction resource collection.
         return TransactionResourceCollection::fromResponse($response);
+    }
+
+    /**
+     * Retrieve a paginated listing of an Account's operations.
+     *
+     * Example
+     * ```php
+     * $account = $bloom->account->retrieve('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
+     * $transactions = $bloom->account->operations(account: $account, limit: 20, order: 'desc')
+     * foreach ($operations as $operation) {
+     *     // do something with the operation resource object.
+     * }
+     * ```
+     *
+     * @see https://developers.stellar.org/api/resources/accounts/operations/
+     * @param Account|Addressable|string $account
+     * @param string|null $cursor
+     * @param string $order
+     * @param int $limit
+     * @param bool $includeFailed
+     * @param bool $includeTransactions
+     * @return OperationResourceCollection|Error
+     */
+    public function retrieveOperations(
+        Account|Addressable|string $account,
+        string $cursor = null,
+        string $order = 'asc',
+        int $limit = 10,
+        bool $includeFailed = false,
+        bool $includeTransactions = false,
+    ): OperationResourceCollection|Error {
+        // Ensure we have a valid 'order' value
+        if (!in_array($order, ['asc', 'desc'], true)) {
+            $order = 'asc';
+        }
+
+        // Ensure we have a valid 'limit' value
+        if ($limit < 1 || $limit > 200) {
+            $limit = 10;
+        }
+
+        // Normalize the account
+        $account = Account::fromAddress($account);
+
+        // Build the request URL
+        $url = $this->bloom->horizon->url(
+            "accounts/{$account->getAddress()}/organizations",
+            [
+                'cursor'         => $cursor,
+                'order'          => $order,
+                'limit'          => $limit,
+                'include_failed' => $includeFailed,
+                'join'           => $includeTransactions ? 'transactions' : null,
+            ]
+        );
+
+        // Make the request
+        $response = $this->bloom->horizon->get($url);
+
+        // Did we get an error?
+        if ($response instanceof Error) {
+            return $response;
+        }
+
+        // Wrap the response in an operation resource collection.
+        return OperationResourceCollection::fromResponse($response);
     }
 }

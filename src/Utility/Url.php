@@ -103,7 +103,7 @@ class Url
      */
     public static function build(string $base, string $path = '/', array $params = []): string
     {
-        // Remove null values from the parameters array
+        // Remove null values from the parameters array using strict evaluation
         $params = array_filter($params, fn ($e) => $e !== null);
 
         // Convert parameter values to strings

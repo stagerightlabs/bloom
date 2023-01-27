@@ -7,6 +7,10 @@ namespace StageRightLabs\Bloom\Tests\Operation;
 use StageRightLabs\Bloom\Account\Account;
 use StageRightLabs\Bloom\Account\MuxedAccount;
 use StageRightLabs\Bloom\Bloom;
+use StageRightLabs\Bloom\Horizon\Error;
+use StageRightLabs\Bloom\Horizon\OperationResource;
+use StageRightLabs\Bloom\Horizon\OperationResourceCollection;
+use StageRightLabs\Bloom\Horizon\Response;
 use StageRightLabs\Bloom\Ledger\LedgerKeyAccount;
 use StageRightLabs\Bloom\Ledger\LedgerKeyClaimableBalance;
 use StageRightLabs\Bloom\Ledger\LedgerKeyData;
@@ -550,5 +554,115 @@ class OperationServiceTest extends TestCase
 
         $this->assertInstanceOf(Operation::class, $operation);
         $this->assertInstanceOf(LiquidityPoolWithdrawOp::class, $operation->getBody()->unwrap());
+    }
+
+    /**
+     * @test
+     * @covers ::retrieve
+     */
+    public function it_can_retrieve_operation_details_from_horizon()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('operation'));
+        $operation = $bloom->operation->retrieve('121692259040116737');
+
+        $this->assertInstanceOf(OperationResource::class, $operation);
+    }
+
+    /**
+     * @test
+     * @covers ::retrieve
+     */
+    public function it_returns_an_error_if_the_operation_retrieval_failed()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('generic_error', statusCode: 400));
+        $operation = $bloom->operation->retrieve('121692259040116737');
+
+        $this->assertInstanceOf(Error::class, $operation);
+    }
+
+    /**
+     * @test
+     * @covers ::retrieveListing
+     */
+    public function it_can_retrieve_a_listing_of_operations_from_horizon()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('operations_listing'));
+        $collection = $bloom->operation->retrieveListing();
+
+        $this->assertInstanceOf(OperationResourceCollection::class, $collection);
+    }
+
+    /**
+     * @test
+     * @covers ::retrieveListing
+     */
+    public function it_adjusts_for_invalid_operations_query_parameters()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('operations_listing'));
+        $collection = $bloom->operation->retrieveListing(
+            order: 'foo',
+            limit: 1000
+        );
+
+        $this->assertInstanceOf(OperationResourceCollection::class, $collection);
+    }
+
+    /**
+     * @test
+     * @covers ::retrieveListing
+     */
+    public function it_returns_an_error_if_the_operations_request_failed()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('generic_error', statusCode: 400));
+        $collection = $bloom->operation->retrieveListing();
+
+        $this->assertInstanceOf(Error::class, $collection);
+    }
+
+    /**
+     * @test
+     * @covers ::retrievePayments
+     */
+    public function it_can_retrieve_a_listing_of_payment_operations_from_horizon()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('payments_listing'));
+        $collection = $bloom->operation->retrievePayments();
+
+        $this->assertInstanceOf(OperationResourceCollection::class, $collection);
+    }
+
+    /**
+     * @test
+     * @covers ::retrievePayments
+     */
+    public function it_adjusts_for_invalid_payment_operations_query_parameters()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('payments_listing'));
+        $collection = $bloom->operation->retrievePayments(
+            order: 'foo',
+            limit: 1000
+        );
+
+        $this->assertInstanceOf(OperationResourceCollection::class, $collection);
+    }
+
+    /**
+     * @test
+     * @covers ::retrievePayments
+     */
+    public function it_returns_an_error_if_the_payment_operations_request_failed()
+    {
+        $bloom = Bloom::fake();
+        $bloom->horizon->withResponse(Response::fake('generic_error', statusCode: 400));
+        $collection = $bloom->operation->retrievePayments();
+
+        $this->assertInstanceOf(Error::class, $collection);
     }
 }

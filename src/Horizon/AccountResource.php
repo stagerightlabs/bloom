@@ -389,13 +389,9 @@ class AccountResource extends Resource
      */
     public function getBalances(): array
     {
-        if ($balances = $this->payload->getArray('balances')) {
-            return array_map(function ($balance) {
-                return AccountBalanceResource::wrap($balance);
-            }, $balances);
-        }
-
-        return [];
+        return array_map(function ($balance) {
+            return AccountBalanceResource::wrap($balance);
+        }, $this->payload->getArray('balances') ?? []);
     }
 
     /**

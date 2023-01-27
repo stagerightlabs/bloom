@@ -145,8 +145,8 @@ class TransactionResource extends Resource
      */
     public function getCreatedAt(): ?\DateTime
     {
-        if ($epoch = $this->payload->getString('created_at')) {
-            return new \DateTime($epoch);
+        if ($createdAt = $this->payload->getString('created_at')) {
+            return new \DateTime($createdAt);
         }
 
         return null;

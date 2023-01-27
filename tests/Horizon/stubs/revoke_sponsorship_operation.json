@@ -1,0 +1,36 @@
+{
+    "_links": {
+        "self": {
+            "href": "https://horizon.stellar.org/operations/124922916260433921"
+        },
+        "transaction": {
+            "href": "https://horizon.stellar.org/transactions/f94c338370839a598753221714de0b0193d4fc56ea369db6efe88f18669cc5a1"
+        },
+        "effects": {
+            "href": "https://horizon.stellar.org/operations/124922916260433921/effects"
+        },
+        "succeeds": {
+            "href": "https://horizon.stellar.org/effects?order=desc\u0026cursor=124922916260433921"
+        },
+        "precedes": {
+            "href": "https://horizon.stellar.org/effects?order=asc\u0026cursor=124922916260433921"
+        }
+    },
+    "id": "124922916260433921",
+    "paging_token": "124922916260433921",
+    "transaction_successful": true,
+    "source_account": "GAYOLLLUIZE4DZMBB2ZBKGBUBZLIOYU6XFLW37GBP2VZD3ABNXCW4BVA",
+    "type": "revoke_sponsorship",
+    "type_i": 19,
+    "created_at": "2020-04-09T00:14:11Z",
+    "transaction_hash": "f94c338370839a598753221714de0b0193d4fc56ea369db6efe88f18669cc5a1",
+    "account_id": "GAYOLLLUIZE4DZMBB2ZBKGBUBZLIOYU6XFLW37GBP2VZD3ABNXCW4BVA",
+    "claimable_balance_id": "claimable_balance_id",
+    "data_account_id": "data_account_id",
+    "data_name": "data_name",
+    "offer_id": "offer_id",
+    "trustline_account_id": "trustline_account_id",
+    "trustline_asset": "trustline_asset",
+    "signer_account_id": "signer_account_id",
+    "signer_key": "signer_key"
+}

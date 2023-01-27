@@ -10,6 +10,8 @@ use StageRightLabs\Bloom\Account\AccountId;
 use StageRightLabs\Bloom\Account\Addressable;
 use StageRightLabs\Bloom\Bloom;
 use StageRightLabs\Bloom\Envelope\TransactionEnvelope;
+use StageRightLabs\Bloom\Horizon\Error;
+use StageRightLabs\Bloom\Horizon\OperationResourceCollection;
 use StageRightLabs\Bloom\Keypair\Keypair;
 use StageRightLabs\Bloom\Operation\Operation;
 use StageRightLabs\Bloom\Primitives\Int64;
@@ -95,7 +97,7 @@ final class TransactionService extends Service
     {
         return $transaction->withPreconditions(
             Preconditions::wrapPreconditionsV2(
-                $this->fetchPreconditions($transaction)->withMinimumTimePoint($minTime)
+                $this->preconditions($transaction)->withMinimumTimePoint($minTime)
             )
         );
     }
@@ -113,7 +115,7 @@ final class TransactionService extends Service
     {
         return $transaction->withPreconditions(
             Preconditions::wrapPreconditionsV2(
-                $this->fetchPreconditions($transaction)->withMaximumTimePoint($maxTime)
+                $this->preconditions($transaction)->withMaximumTimePoint($maxTime)
             )
         );
     }
@@ -149,7 +151,7 @@ final class TransactionService extends Service
     {
         return $transaction->withPreconditions(
             Preconditions::wrapPreconditionsV2(
-                $this->fetchPreconditions($transaction)->withMinimumLedgerOffset($minLedgerOffset)
+                $this->preconditions($transaction)->withMinimumLedgerOffset($minLedgerOffset)
             )
         );
     }
@@ -167,7 +169,7 @@ final class TransactionService extends Service
     {
         return $transaction->withPreconditions(
             Preconditions::wrapPreconditionsV2(
-                $this->fetchPreconditions($transaction)->withMaximumLedgerOffset($maxLedgerOffset)
+                $this->preconditions($transaction)->withMaximumLedgerOffset($maxLedgerOffset)
             )
         );
     }
@@ -185,7 +187,7 @@ final class TransactionService extends Service
     {
         return $transaction->withPreconditions(
             Preconditions::wrapPreconditionsV2(
-                $this->fetchPreconditions($transaction)->withMinimumSequenceNumber($minimumSequenceNumber)
+                $this->preconditions($transaction)->withMinimumSequenceNumber($minimumSequenceNumber)
             )
         );
     }
@@ -203,7 +205,7 @@ final class TransactionService extends Service
     {
         return $transaction->withPreconditions(
             Preconditions::wrapPreconditionsV2(
-                $this->fetchPreconditions($transaction)->withMinimumSequenceAge($minimumSequenceAge)
+                $this->preconditions($transaction)->withMinimumSequenceAge($minimumSequenceAge)
             )
         );
     }
@@ -221,7 +223,7 @@ final class TransactionService extends Service
     {
         return $transaction->withPreconditions(
             Preconditions::wrapPreconditionsV2(
-                $this->fetchPreconditions($transaction)->withMinimumSequenceLedgerGap($minimumSequenceLedgerGap)
+                $this->preconditions($transaction)->withMinimumSequenceLedgerGap($minimumSequenceLedgerGap)
             )
         );
     }
@@ -238,12 +240,12 @@ final class TransactionService extends Service
     }
 
     /**
-     * Fetch existing preconditions from a transaction and cast to PreconditionsV2 format.
+     * Retrieve existing preconditions from a transaction as a PreconditionsV2.
      *
      * @param Transaction $transaction
      * @return PreconditionsV2
      */
-    protected function fetchPreconditions(Transaction $transaction): PreconditionsV2
+    public function preconditions(Transaction $transaction): PreconditionsV2
     {
         $preconditions = $transaction->getPreconditions()?->unwrap();
 
@@ -257,5 +259,58 @@ final class TransactionService extends Service
         }
 
         return $preconditions;
+    }
+
+    /**
+     * Retrieve a list of operations from Horizon for a transaction.
+     *
+     * @param string $transactionHash
+     * @param string|null $cursor
+     * @param string $order
+     * @param int $limit
+     * @param bool $includeFailed
+     * @param bool $includeTransactions
+     * @return OperationResourceCollection|Error
+     */
+    public function retrieveOperations(
+        string $transactionHash,
+        string $cursor = null,
+        string $order = 'asc',
+        int $limit = 10,
+        bool $includeFailed = false,
+        bool $includeTransactions = false,
+    ): OperationResourceCollection|Error {
+        // Ensure we have a valid 'order' value
+        if (!in_array($order, ['asc', 'desc'], true)) {
+            $order = 'asc';
+        }
+
+        // Ensure we have a valid 'limit' value
+        if ($limit < 1 || $limit > 200) {
+            $limit = 10;
+        }
+
+        // Build the request URL
+        $url = $this->bloom->horizon->url(
+            "transactions/{$transactionHash}/operations",
+            [
+                'cursor'         => $cursor,
+                'order'          => $order,
+                'limit'          => $limit,
+                'include_failed' => $includeFailed,
+                'join'           => $includeTransactions ? 'transactions' : null,
+            ]
+        );
+
+        // Make the request
+        $response = $this->bloom->horizon->get($url);
+
+        // Did we get an error?
+        if ($response instanceof Error) {
+            return $response;
+        }
+
+        // Wrap the response in an operation resource collection.
+        return OperationResourceCollection::fromResponse($response);
     }
 }
