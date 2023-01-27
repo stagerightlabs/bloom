@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace StageRightLabs\Bloom\Horizon;
 
 use StageRightLabs\Bloom\Utility\Json;
-use StageRightLabs\Bloom\Utility\NoConstructor;
 
 class Resource
 {

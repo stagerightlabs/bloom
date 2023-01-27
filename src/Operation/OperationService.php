@@ -16,6 +16,9 @@ use StageRightLabs\Bloom\ClaimableBalance\Claimant;
 use StageRightLabs\Bloom\ClaimableBalance\ClaimantList;
 use StageRightLabs\Bloom\Cryptography\Hash;
 use StageRightLabs\Bloom\Exception\InvalidAssetException;
+use StageRightLabs\Bloom\Horizon\Error;
+use StageRightLabs\Bloom\Horizon\OperationResource;
+use StageRightLabs\Bloom\Horizon\OperationResourceCollection;
 use StageRightLabs\Bloom\Ledger\LedgerKey;
 use StageRightLabs\Bloom\Ledger\Price;
 use StageRightLabs\Bloom\LiquidityPool\LiquidityPoolParameters;
@@ -660,5 +663,147 @@ final class OperationService extends Service
             minAmountB: $minAmountB,
             source: $source,
         );
+    }
+
+    /**
+     * Retrieve the details of an individual operation.
+     *
+     * @param string $operationId
+     * @param bool $includeTransactions
+     * @return OperationResource|Error
+     */
+    public function retrieve(
+        string $operationId,
+        bool $includeTransactions = false
+    ): OperationResource|Error {
+        // Build the request URL
+        $url = $this->bloom->horizon->url(
+            "operations/{$operationId}",
+            [
+                'join' => $includeTransactions ? 'transactions' : null,
+            ]
+        );
+
+        // Make the request
+        $response = $this->bloom->horizon->get($url);
+
+        // Did we get an error?
+        if ($response instanceof Error) {
+            return $response;
+        }
+
+        // Wrap the response in an operation resource collection.
+        return OperationResource::fromResponse($response);
+    }
+
+    /**
+     * Retrieve a paginated listing of operations from Horizon.
+     *
+     * @see https://developers.stellar.org/api/resources/operations/list/
+     * @param string|null $cursor
+     * @param string $order
+     * @param int $limit
+     * @param bool $includeFailed
+     * @param bool $includeTransactions
+     * @return OperationResourceCollection|Error
+     */
+    public function retrieveListing(
+        string $cursor = null,
+        string $order = 'asc',
+        int $limit = 10,
+        bool $includeFailed = false,
+        bool $includeTransactions = false,
+    ): OperationResourceCollection|Error {
+        // Ensure we have a valid 'order' value
+        if (!in_array($order, ['asc', 'desc'], true)) {
+            $order = 'asc';
+        }
+
+        // Ensure we have a valid 'limit' value
+        if ($limit < 1 || $limit > 200) {
+            $limit = 10;
+        }
+
+        // Build the request URL
+        $url = $this->bloom->horizon->url(
+            "operations",
+            [
+                'cursor'         => $cursor,
+                'order'          => $order,
+                'limit'          => $limit,
+                'include_failed' => $includeFailed,
+                'join'           => $includeTransactions ? 'transactions' : null,
+            ]
+        );
+
+        // Make the request
+        $response = $this->bloom->horizon->get($url);
+
+        // Did we get an error?
+        if ($response instanceof Error) {
+            return $response;
+        }
+
+        // Wrap the response in an operation resource collection.
+        return OperationResourceCollection::fromResponse($response);
+    }
+
+    /**
+     * Retrieve a paginated listing of successful payment related operations from Horizon.
+     *
+     * Operations that can be returned include:
+     *  - create_account
+     *  - payment
+     *  - path_payment_strict_receive
+     *  - path_payment_strict_send
+     *  - account_merge
+     *
+     * @see https://developers.stellar.org/api/resources/operations/list-payments/
+     * @param string|null $cursor
+     * @param string $order
+     * @param int $limit
+     * @param bool $includeFailed
+     * @param bool $includeTransactions
+     * @return OperationResourceCollection|Error
+     */
+    public function retrievePayments(
+        string $cursor = null,
+        string $order = 'asc',
+        int $limit = 10,
+        bool $includeFailed = false,
+        bool $includeTransactions = false,
+    ): OperationResourceCollection|Error {
+        // Ensure we have a valid 'order' value
+        if (!in_array($order, ['asc', 'desc'], true)) {
+            $order = 'asc';
+        }
+
+        // Ensure we have a valid 'limit' value
+        if ($limit < 1 || $limit > 200) {
+            $limit = 10;
+        }
+
+        // Build the request URL
+        $url = $this->bloom->horizon->url(
+            "payments",
+            [
+                'cursor'         => $cursor,
+                'order'          => $order,
+                'limit'          => $limit,
+                'include_failed' => $includeFailed,
+                'join'           => $includeTransactions ? 'transactions' : null,
+            ]
+        );
+
+        // Make the request
+        $response = $this->bloom->horizon->get($url);
+
+        // Did we get an error?
+        if ($response instanceof Error) {
+            return $response;
+        }
+
+        // Wrap the response in an operation resource collection.
+        return OperationResourceCollection::fromResponse($response);
     }
 }

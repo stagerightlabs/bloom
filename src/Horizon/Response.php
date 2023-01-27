@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace StageRightLabs\Bloom\Horizon;
 
+use StageRightLabs\Bloom\Utility\Json;
+
 final class Response
 {
     /**
@@ -58,6 +60,16 @@ final class Response
     public function getBody(): string
     {
         return $this->body;
+    }
+
+    /**
+     * Return the body of the response as a Json object.
+     *
+     * @return Json
+     */
+    public function getJson(): Json
+    {
+        return Json::of($this->getBody());
     }
 
     /**

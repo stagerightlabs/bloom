@@ -55,6 +55,18 @@ class ResponseTest extends TestCase
 
     /**
      * @test
+     * @covers ::getJson
+     */
+    public function it_can_return_the_response_body_as_a_json_object()
+    {
+        $response = new Response(200, [], '{"foo": "bar"}');
+
+        $this->assertInstanceOf(Json::class, $response->getJson());
+        $this->assertEquals('{"foo":"bar"}', $response->getJson()->toNativeString());
+    }
+
+    /**
+     * @test
      * @covers ::getTotalTime
      */
     public function it_returns_the_request_execution_time()

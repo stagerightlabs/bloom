@@ -638,5 +638,71 @@ a percentage of slippage from the "spot price" on the pool.
 
 - [https://developers.stellar.org/docs/fundamentals-and-concepts/list-of-operations#liquidity-pool-withdraw](https://developers.stellar.org/docs/fundamentals-and-concepts/list-of-operations#liquidity-pool-withdraw)
 
+## retrieve()
+
+Retrieve the details of an individual operation.
+
+### Parameters
+
+| Name | Type |
+| ---- | ---- |
+| $operationId| `string` |
+| $includeTransactions| `bool` |
+
+### Return Type
+
+`OperationResource,Error`
+
+## retrieveListing()
+
+Retrieve a paginated listing of operations from Horizon.
+
+### Parameters
+
+| Name | Type |
+| ---- | ---- |
+| $cursor| `string,null` |
+| $order| `string` |
+| $limit| `int` |
+| $includeFailed| `bool` |
+| $includeTransactions| `bool` |
+
+### Return Type
+
+`OperationResourceCollection,Error`
+
+### Further Reading:
+
+- [https://developers.stellar.org/api/resources/operations/list/](https://developers.stellar.org/api/resources/operations/list/)
+
+## retrievePayments()
+
+Retrieve a paginated listing of successful payment related operations from Horizon.
+
+Operations that can be returned include:
+ - create_account
+ - payment
+ - path_payment_strict_receive
+ - path_payment_strict_send
+ - account_merge
+
+### Parameters
+
+| Name | Type |
+| ---- | ---- |
+| $cursor| `string,null` |
+| $order| `string` |
+| $limit| `int` |
+| $includeFailed| `bool` |
+| $includeTransactions| `bool` |
+
+### Return Type
+
+`OperationResourceCollection,Error`
+
+### Further Reading:
+
+- [https://developers.stellar.org/api/resources/operations/list-payments/](https://developers.stellar.org/api/resources/operations/list-payments/)
+
 ###### This page was dynamically generated from the OperationService source code.
 

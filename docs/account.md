@@ -61,7 +61,7 @@ $string = $sequenceNumber->toNativeString();
 
 `Account`
 
-## transactions()
+## retrieveTransactions()
 
 Retrieve a paginated listing of an Account's transactions.
 
@@ -91,6 +91,38 @@ foreach ($transactions as $transaction) {
 ### Further Reading:
 
 - [https://developers.stellar.org/api/resources/accounts/transactions/](https://developers.stellar.org/api/resources/accounts/transactions/)
+
+## retrieveOperations()
+
+Retrieve a paginated listing of an Account's operations.
+
+Example
+```php
+$account = $bloom->account->retrieve('GBVG2QOHHFBVHAEGNF4XRUCAPAGWDROONM2LC4BK4ECCQ5RTQOO64VBW');
+$transactions = $bloom->account->operations(account: $account, limit: 20, order: 'desc')
+foreach ($operations as $operation) {
+    // do something with the operation resource object.
+}
+```
+
+### Parameters
+
+| Name | Type |
+| ---- | ---- |
+| $account| `Account,Addressable,string` |
+| $cursor| `string,null` |
+| $order| `string` |
+| $limit| `int` |
+| $includeFailed| `bool` |
+| $includeTransactions| `bool` |
+
+### Return Type
+
+`OperationResourceCollection,Error`
+
+### Further Reading:
+
+- [https://developers.stellar.org/api/resources/accounts/operations/](https://developers.stellar.org/api/resources/accounts/operations/)
 
 ###### This page was dynamically generated from the AccountService source code.
 

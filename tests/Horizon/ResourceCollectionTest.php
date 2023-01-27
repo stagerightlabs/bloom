@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace StageRightLabs\Bloom\Tests\Horizon;
 
+use StageRightLabs\Bloom\Horizon\ChangeTrustOperationResource;
+use StageRightLabs\Bloom\Horizon\CreateAccountOperationResource;
+use StageRightLabs\Bloom\Horizon\OperationResourceCollection;
+use StageRightLabs\Bloom\Horizon\PaymentOperationResource;
 use StageRightLabs\Bloom\Horizon\Resource;
 use StageRightLabs\Bloom\Horizon\ResourceCollection;
 use StageRightLabs\Bloom\Horizon\Response;
@@ -58,6 +62,22 @@ class ResourceCollectionTest extends TestCase
         foreach ($collection as $resource) {
             $this->assertInstanceOf(Resource::class, $resource);
         }
+    }
+
+    /**
+     * @test
+     * @covers ::wrap
+     */
+    public function it_can_wrap_a_collection_of_operations()
+    {
+        $collection = OperationResourceCollection::wrap(
+            Response::fake('account_operations')->getBody()
+        );
+
+        $this->assertCount(3, $collection);
+        $this->assertInstanceOf(CreateAccountOperationResource::class, $collection[0]);
+        $this->assertInstanceOf(ChangeTrustOperationResource::class, $collection[1]);
+        $this->assertInstanceOf(PaymentOperationResource::class, $collection[2]);
     }
 
     /**

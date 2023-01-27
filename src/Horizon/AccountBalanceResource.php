@@ -11,7 +11,7 @@ use StageRightLabs\Bloom\Primitives\ScaledAmount;
 class AccountBalanceResource extends Resource
 {
     /**
-     * Return the asset balance as a string.
+     * Return the asset balance as a scaled amount.
      *
      * @return ScaledAmount
      */
